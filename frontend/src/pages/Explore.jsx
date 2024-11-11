@@ -1,9 +1,9 @@
 import React from 'react'
 import { AsideLeft } from '../components/AsideLeft'
 
-const Profile = () => {
+const Explore = () => {
   return (
-    <>
+<>
     <div>
           {/* <MobileNavBar /> */}
 
@@ -14,7 +14,7 @@ const Profile = () => {
 
                   <main className="md:mx-4 w-full sm:basis-2/3">
 
-                    Profile
+                    EXPLOOORE
 
                   </main>
                 </div>
@@ -24,4 +24,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default Explore

@@ -1,7 +1,7 @@
 import React from 'react'
 import { AsideLeft } from '../components/AsideLeft'
 
-const Profile = () => {
+const Bookmarks = () => {
   return (
     <>
     <div>
@@ -14,7 +14,7 @@ const Profile = () => {
 
                   <main className="md:mx-4 w-full sm:basis-2/3">
 
-                    Profile
+                    Bookmarks
 
                   </main>
                 </div>
@@ -24,4 +24,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default Bookmarks
