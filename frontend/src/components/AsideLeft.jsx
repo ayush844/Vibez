@@ -13,7 +13,7 @@ export const AsideLeft = () => {
     return (
         <aside className="hidden sm:block basis-1/6 lg:basis-1/5">
 
-            <header className="flex font-bold items-center justify-center text-blue-600 mx-5 my-4 text-xl xl:text-2xl">
+            <header className="flex font-bold items-center justify-center text-blue-600 mx-5 my-4 text-xl md:text-2xl xl:text-4xl mb-10">
                 <Link to="/"> ECHO </Link>
             </header>
 
