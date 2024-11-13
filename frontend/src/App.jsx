@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, CSSProperties } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -8,22 +8,41 @@ import { AsideLeft } from "./components/AsideLeft";
 import AsideRight from "./components/AsideRight";
 import { Link } from "react-router-dom";
 import MobileNavBar from "./components/MobileNavBar";
+import { CiMenuKebab } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
+import { FaRegCommentAlt } from "react-icons/fa";
+import { FaRegBookmark } from "react-icons/fa";
+
+// import ClipLoader from "react-spinners/ScaleLoader";
+
+import ClipLoader from "react-spinners/RingLoader";
+import Post from "./components/Post";
 
 function App() {
   const [content, setContent] = useState("");
   const [showFilterPostModal, setShowFilterPostModal] = useState(false);
   const [sortPostBy, setSortPostBy] = useState("Latest");
 
+  let [color, setColor] = useState("blue");
+
+  const override = {
+    display: "block",
+    margin: "0 auto",
+    borderColor: "red",
+  };
+
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <>
-      <div>
+      <div className="mb-40">
         <MobileNavBar />
 
         <div className="flex justify-center px-5 sm:px-32 md:mt-4">
           <div className="flex h-screen w-screen">
             <AsideLeft />
 
-            <main className="md:mx-12 w-full sm:basis-2/3">
+            <main className="md:mx-12 w-full sm:basis-2/3 ">
               <header className="m-4 hidden sm:flex">
                 <h1 className="text-2xl font-bold">Home</h1>
               </header>
@@ -38,7 +57,7 @@ function App() {
               {/* creating a post */}
 
               <>
-                <div className="border-2 sm:ml-3 sm:mr-0 flex px-2 py-3 rounded-md">
+                <div className="border-2 sm:ml-3 sm:mr-10 flex px-2 py-3 rounded-md w-full">
                   <div className="mt-3 w-12 h-12 text-lg flex-none">
                     <img
                       src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -128,7 +147,40 @@ function App() {
                     </div>
                   )}
                 </div>
+
+                {isLoading ? (
+                  <div className="z-20 flex items-center">
+                    <ClipLoader
+                      color={color}
+                      loading={true}
+                      cssOverride={override}
+                      size={100}
+                      aria-label="Loading Spinner"
+                      data-testid="loader"
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <Post />
+
+                    <Post />
+
+                    <Post />
+
+                    <Post />
+
+                    <Post />
+
+                    <Post />
+
+                    <Post />
+
+                    <Post />
+                  </>
+                )}
               </>
+
+              <div className=" h-40"></div>
             </main>
 
             <AsideRight />
