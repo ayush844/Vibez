@@ -28,7 +28,7 @@ const Post = () => {
         >
           <CiMenuKebab className=" text-lg font-bold" />
           {showPostOptions && (
-            <div className="w-30 h-22 px-1 shadow-xl bg-slate-100 border border-slate-300 text-slate-600 font-semibold absolute bottom-[-7rem] z-20 rounded-xl">
+            <div className="w-30 h-22 px-1 shadow-xl bg-slate-100 border border-slate-300 text-slate-600 font-semibold absolute bottom-[-5rem] z-20 rounded-xl">
               <ul className="p-2 cursor-pointer text-start">
                 <li
                   className="p-1 hover:bg-slate-200 rounded"
@@ -36,7 +36,7 @@ const Post = () => {
                     setShowPostOptions(false);
                   }}
                 >
-                  Latest
+                  Edit
                 </li>
                 <li
                   className="p-1 hover:bg-slate-200 rounded"
@@ -44,15 +44,7 @@ const Post = () => {
                     setShowPostOptions(false);
                   }}
                 >
-                  Oldest
-                </li>
-                <li
-                  className="p-1 hover:bg-slate-200 rounded"
-                  onClick={() => {
-                    setShowPostOptions(false);
-                  }}
-                >
-                  Trending
+                  Delete
                 </li>
               </ul>
             </div>
@@ -82,15 +74,15 @@ const Post = () => {
 
       <div className="px-2 py-6 md:px-12 md:py-8 flex items-center justify-between">
         <div className=" flex items-center gap-2">
-          <FaHeart className=" text-xl md:text-3xl text-red-600 font-bold" />
+          <FaHeart className=" text-xl md:text-3xl text-red-600 font-bold cursor-pointer" />
           <span className="text-lg font-bold">6</span>
         </div>
         <div className=" flex items-center gap-2">
-          <FaRegCommentAlt className=" text-xl md:text-3xl text-blue-600 font-bold" />
+          <FaRegCommentAlt className=" text-xl md:text-3xl text-blue-600 font-bold cursor-pointer" />
           <span className="text-lg font-bold">2</span>
         </div>
         <div className=" flex items-center gap-2">
-          <FaRegBookmark className=" text-xl md:text-3xl text-green-500 font-bold" />
+          <FaRegBookmark className=" text-xl md:text-3xl text-green-500 font-bold cursor-pointer" />
         </div>
       </div>
     </div>
