@@ -35,10 +35,10 @@ function App() {
 
   return (
     <>
-      <div className="mb-40">
+      <div className="mb-40 ">
         <MobileNavBar />
 
-        <div className="flex justify-center px-5 sm:px-32 md:mt-4">
+        <div className="flex justify-center px-5 sm:px-32 md:mt-4 relative">
           <div className="flex h-screen w-screen">
             <AsideLeft />
 
