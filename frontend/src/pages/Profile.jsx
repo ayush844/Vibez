@@ -6,9 +6,36 @@ import { Link } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
 import ClipLoader from "react-spinners/RingLoader";
 import Post from "../components/Post";
+import FollowingModal from "../components/modals/FollowingModal";
+import FollowerModal from "../components/modals/FollowerModal";
+import LogoutModal from "../components/modals/LogoutModal";
 
 const Profile = () => {
   let [color, setColor] = useState("blue");
+
+  const [followingModal, setFollowingModal] = useState(false);
+
+  const [followerModal, setFollowerModal] = useState(false);
+
+  const [logoutModal, setLogoutModal] = useState(false);
+
+  const toggleFollowingModal = () => {
+    setFollowingModal((modal) => !modal);
+  };
+
+  const toggleFollowerModal = () => {
+    setFollowerModal((modal) => !modal);
+  };
+
+  const toggleLogoutModal = () => {
+    setLogoutModal((modal) => !modal);
+  };
+
+  if (followingModal || followerModal || logoutModal) {
+    document.body.classList.add("overflow-y-hidden");
+  } else {
+    document.body.classList.remove("overflow-y-hidden");
+  }
 
   const override = {
     display: "block",
@@ -20,6 +47,36 @@ const Profile = () => {
 
   return (
     <>
+      {followingModal && (
+        <>
+          <div
+            onClick={toggleFollowingModal}
+            className=" z-10 fixed top-0 left-0 right-0 bottom-0 w-screen h-screen bg-[rgba(3,4,8,0.51)]"
+          ></div>
+          <FollowingModal toggleFollowingModal={toggleFollowingModal} />
+        </>
+      )}
+
+      {followerModal && (
+        <>
+          <div
+            onClick={toggleFollowerModal}
+            className=" z-10 fixed top-0 left-0 right-0 bottom-0 w-screen h-screen bg-[rgba(3,4,8,0.51)]"
+          ></div>
+          <FollowerModal toggleFollowerModal={toggleFollowerModal} />
+        </>
+      )}
+
+      {logoutModal && (
+        <>
+          <div
+            onClick={toggleLogoutModal}
+            className=" z-10 fixed top-0 left-0 right-0 bottom-0 w-screen h-screen bg-[rgba(3,4,8,0.51)]"
+          ></div>
+          <LogoutModal toggleLogoutModal={toggleLogoutModal} />
+        </>
+      )}
+
       <div>
         <MobileNavBar />
 
@@ -30,7 +87,10 @@ const Profile = () => {
             <main className="md:mx-4 w-full sm:basis-2/3">
               <header className="m-4 hidden sm:flex  justify-between">
                 <h1 className="text-2xl font-bold">Profile</h1>
-                <IoIosLogOut className=" text-blue-600 text-3xl font-bold cursor-pointer" />
+                <IoIosLogOut
+                  onClick={() => setLogoutModal(true)}
+                  className=" text-blue-600 text-3xl font-bold cursor-pointer"
+                />
               </header>
 
               <header className="text-xl font-bold flex py-4 text-blue-600 sm:hidden justify-between">
@@ -38,7 +98,10 @@ const Profile = () => {
                   {" "}
                   ALCON{" "}
                 </Link>
-                <IoIosLogOut className=" text-blue-600 text-3xl font-bold cursor-pointer" />
+                <IoIosLogOut
+                  onClick={() => setLogoutModal(true)}
+                  className=" text-blue-600 text-3xl font-bold cursor-pointer"
+                />
               </header>
 
               <>
@@ -94,11 +157,23 @@ const Profile = () => {
                     </div>
 
                     <div className="max-w-[50rem] my-8 md:my-12 flex items-center justify-between gap-6 md:gap-8">
-                      <h1 className=" text-lg md:text-2xl font-semibold">
-                        10 <span className=" text-gray-600">followers</span>
+                      <h1
+                        className=" text-lg md:text-2xl font-semibold cursor-pointer hover:text-blue-900 group"
+                        onClick={() => setFollowerModal(true)}
+                      >
+                        10{" "}
+                        <span className=" text-gray-600 group-hover:text-blue-900">
+                          followers
+                        </span>
                       </h1>
-                      <h1 className=" text-lg md:text-2xl font-semibold">
-                        7 <span className=" text-gray-600">following</span>
+                      <h1
+                        className=" text-lg md:text-2xl font-semibold cursor-pointer hover:text-blue-900 group"
+                        onClick={() => setFollowingModal(true)}
+                      >
+                        7{" "}
+                        <span className=" text-gray-600 group-hover:text-blue-900">
+                          following
+                        </span>
                       </h1>
                       <h1 className=" text-lg md:text-2xl font-semibold">
                         5 <span className=" text-gray-600">posts</span>

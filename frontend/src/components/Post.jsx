@@ -3,12 +3,16 @@ import { CiMenuKebab } from "react-icons/ci";
 import { FaHeart, FaRegBookmark, FaRegCommentAlt } from "react-icons/fa";
 import EditPost from "./modals/EditPost";
 import DeletePost from "./modals/DeletePost";
+import CommentsModal from "./modals/CommentsModal";
+import LikeModal from "./modals/LikeModal";
 
 const Post = () => {
   const [showPostOptions, setShowPostOptions] = useState(false);
 
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [commentModal, setCommentModal] = useState(false);
+  const [likeModal, setLikeModal] = useState(false);
 
   const toggleEditModal = () => {
     setEditModal((modal) => !modal);
@@ -18,13 +22,15 @@ const Post = () => {
     setDeleteModal((modal) => !modal);
   };
 
-  if (editModal) {
-    document.body.classList.add("overflow-y-hidden");
-  } else {
-    document.body.classList.remove("overflow-y-hidden");
-  }
+  const toggleCommentModal = () => {
+    setCommentModal((modal) => !modal);
+  };
 
-  if (deleteModal) {
+  const toggleLikeModal = () => {
+    setLikeModal((modal) => !modal);
+  };
+
+  if (editModal || deleteModal || commentModal || likeModal) {
     document.body.classList.add("overflow-y-hidden");
   } else {
     document.body.classList.remove("overflow-y-hidden");
@@ -49,6 +55,26 @@ const Post = () => {
             className=" z-10 fixed top-0 left-0 right-0 bottom-0 w-screen h-screen bg-[rgba(3,4,8,0.51)]"
           ></div>
           <DeletePost toggleDeleteModal={toggleDeleteModal} />
+        </>
+      )}
+
+      {commentModal && (
+        <>
+          <div
+            onClick={toggleCommentModal}
+            className=" z-10 fixed top-0 left-0 right-0 bottom-0 w-screen h-screen bg-[rgba(3,4,8,0.51)]"
+          ></div>
+          <CommentsModal toggleCommentModal={toggleCommentModal} />
+        </>
+      )}
+
+      {likeModal && (
+        <>
+          <div
+            onClick={toggleLikeModal}
+            className=" z-10 fixed top-0 left-0 right-0 bottom-0 w-screen h-screen bg-[rgba(3,4,8,0.51)]"
+          ></div>
+          <LikeModal toggleLikeModal={toggleLikeModal} />
         </>
       )}
 
@@ -122,11 +148,17 @@ const Post = () => {
 
         <div className="px-2 py-6 md:px-12 md:py-8 flex items-center justify-between">
           <div className=" flex items-center gap-2">
-            <FaHeart className=" text-xl md:text-3xl text-red-600 font-bold cursor-pointer" />
+            <FaHeart
+              className=" text-xl md:text-3xl text-red-600 font-bold cursor-pointer"
+              onClick={() => setLikeModal(true)}
+            />
             <span className="text-lg font-bold">6</span>
           </div>
           <div className=" flex items-center gap-2">
-            <FaRegCommentAlt className=" text-xl md:text-3xl text-blue-600 font-bold cursor-pointer" />
+            <FaRegCommentAlt
+              className=" text-xl md:text-3xl text-blue-600 font-bold cursor-pointer"
+              onClick={() => setCommentModal(true)}
+            />
             <span className="text-lg font-bold">2</span>
           </div>
           <div className=" flex items-center gap-2">
