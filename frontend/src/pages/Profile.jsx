@@ -9,6 +9,7 @@ import Post from "../components/Post";
 import FollowingModal from "../components/modals/FollowingModal";
 import FollowerModal from "../components/modals/FollowerModal";
 import LogoutModal from "../components/modals/LogoutModal";
+import EditProfile from "../components/modals/EditProfile";
 
 const Profile = () => {
   let [color, setColor] = useState("blue");
@@ -18,6 +19,8 @@ const Profile = () => {
   const [followerModal, setFollowerModal] = useState(false);
 
   const [logoutModal, setLogoutModal] = useState(false);
+
+  const [editProfileModal, setEditProfileModal] = useState(false);
 
   const toggleFollowingModal = () => {
     setFollowingModal((modal) => !modal);
@@ -31,7 +34,11 @@ const Profile = () => {
     setLogoutModal((modal) => !modal);
   };
 
-  if (followingModal || followerModal || logoutModal) {
+  const toggleEditProfileModal = () => {
+    setEditProfileModal((modal) => !modal);
+  };
+
+  if (followingModal || followerModal || logoutModal || editProfileModal) {
     document.body.classList.add("overflow-y-hidden");
   } else {
     document.body.classList.remove("overflow-y-hidden");
@@ -74,6 +81,16 @@ const Profile = () => {
             className=" z-10 fixed top-0 left-0 right-0 bottom-0 w-screen h-screen bg-[rgba(3,4,8,0.51)]"
           ></div>
           <LogoutModal toggleLogoutModal={toggleLogoutModal} />
+        </>
+      )}
+
+      {editProfileModal && (
+        <>
+          <div
+            onClick={toggleEditProfileModal}
+            className=" z-10 fixed top-0 left-0 right-0 bottom-0 w-screen h-screen bg-[rgba(3,4,8,0.51)]"
+          ></div>
+          <EditProfile toggleEditProfileModal={toggleEditProfileModal} />
         </>
       )}
 
@@ -130,7 +147,10 @@ const Profile = () => {
                         <h1 className="text-2xl font-bold italic line-clamp-3">
                           Ayush Sharma
                         </h1>
-                        <button className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl shadow-md hover:shadow-lg transition duration-150 ease-in-out disabled:cursor-not-allowed">
+                        <button
+                          className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl shadow-md hover:shadow-lg transition duration-150 ease-in-out disabled:cursor-not-allowed"
+                          onClick={() => setEditProfileModal(true)}
+                        >
                           EDIT PROFILE
                         </button>
                       </div>
