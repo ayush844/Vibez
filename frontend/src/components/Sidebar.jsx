@@ -9,13 +9,19 @@ import Messagesicon from "../assets/icons/icons8-message.svg";
 import Profileicon from "../assets/icons/icons8-male-user.svg";
 import Settingsicon from "../assets/icons/icons8-settings.svg";
 import Logouticon from "../assets/icons/icons8-logout.svg";
+import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const location = useLocation();
+
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
+  // Helper function to check active route
+  const isActive = (path) => location.pathname === path;
 
   return (
     <div className="relative">
@@ -48,9 +54,11 @@ const Sidebar = () => {
               </div>
             </li>
             <li>
-              <a
-                href="#"
-                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
+              <Link
+                to="/"
+                className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
+                  isActive("/") && "border-indigo-500 text-gray-800 bg-gray-50"
+                }`}
               >
                 <img
                   src={Homeicon}
@@ -60,12 +68,15 @@ const Sidebar = () => {
                 <span className="ml-2 text-base font-bold tracking-wide truncate">
                   Feed
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
-                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
+              <Link
+                to="/explore"
+                className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
+                  isActive("/explore") &&
+                  "border-indigo-500 text-gray-800 bg-gray-50"
+                }`}
               >
                 <img
                   src={Exploreicon}
@@ -78,12 +89,15 @@ const Sidebar = () => {
                 <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-indigo-500 bg-indigo-50 rounded-full">
                   New
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
-                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
+              <Link
+                to="/bookmarks"
+                className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
+                  isActive("/bookmarks") &&
+                  "border-indigo-500 text-gray-800 bg-gray-50"
+                }`}
               >
                 <img
                   src={Bookmarksicon}
@@ -93,12 +107,15 @@ const Sidebar = () => {
                 <span className="ml-2 text-base font-bold tracking-wide truncate">
                   Bookmarks
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
-                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
+              <Link
+                to="/notifications"
+                className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
+                  isActive("/notifications") &&
+                  "border-indigo-500 text-gray-800 bg-gray-50"
+                }`}
               >
                 <img
                   src={Notificationicon}
@@ -111,7 +128,7 @@ const Sidebar = () => {
                 <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full">
                   1.2k
                 </span>
-              </a>
+              </Link>
             </li>
             <li className="px-5">
               <div className="flex flex-row items-center h-8">
@@ -121,9 +138,12 @@ const Sidebar = () => {
               </div>
             </li>
             <li>
-              <a
-                href="#"
-                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
+              <Link
+                to="/friends"
+                className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
+                  isActive("/friends") &&
+                  "border-indigo-500 text-gray-800 bg-gray-50"
+                }`}
               >
                 <img
                   src={Friendsicon}
@@ -133,12 +153,15 @@ const Sidebar = () => {
                 <span className="ml-2 text-sm font-bold tracking-wide truncate">
                   Friends
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
-                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
+              <Link
+                to="/messages"
+                className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
+                  isActive("/messages") &&
+                  "border-indigo-500 text-gray-800 bg-gray-50"
+                }`}
               >
                 <img
                   src={Messagesicon}
@@ -151,7 +174,7 @@ const Sidebar = () => {
                 <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full">
                   15
                 </span>
-              </a>
+              </Link>
             </li>
             <li className="px-5">
               <div className="flex flex-row items-center h-8">
@@ -161,9 +184,11 @@ const Sidebar = () => {
               </div>
             </li>
             <li>
-              <a
-                href="#"
-                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
+              <Link
+                to="/profile"
+                className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
+                  isActive("/") && "border-indigo-500 text-gray-800 bg-gray-50"
+                }`}
               >
                 <img
                   src={Profileicon}
@@ -173,12 +198,15 @@ const Sidebar = () => {
                 <span className="ml-2 text-sm font-bold tracking-wide truncate">
                   Profile
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
-                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
+              <Link
+                to="/setting"
+                className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
+                  isActive("/setting") &&
+                  "border-indigo-500 text-gray-800 bg-gray-50"
+                }`}
               >
                 <img
                   src={Settingsicon}
@@ -188,7 +216,7 @@ const Sidebar = () => {
                 <span className="ml-2 text-sm font-bold tracking-wide truncate">
                   Setting
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
               <a
