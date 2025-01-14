@@ -57,7 +57,7 @@ const Sidebar = () => {
               <Link
                 to="/"
                 className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
-                  isActive("/") && "border-indigo-500 text-gray-800 bg-gray-50"
+                  isActive("/") && "!border-indigo-500 text-gray-800 bg-gray-50"
                 }`}
               >
                 <img
@@ -75,7 +75,7 @@ const Sidebar = () => {
                 to="/explore"
                 className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
                   isActive("/explore") &&
-                  "border-indigo-500 text-gray-800 bg-gray-50"
+                  "!border-indigo-500 text-gray-800 bg-gray-50"
                 }`}
               >
                 <img
@@ -96,7 +96,7 @@ const Sidebar = () => {
                 to="/bookmarks"
                 className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
                   isActive("/bookmarks") &&
-                  "border-indigo-500 text-gray-800 bg-gray-50"
+                  "!border-indigo-500 text-gray-800 bg-gray-50"
                 }`}
               >
                 <img
@@ -114,7 +114,7 @@ const Sidebar = () => {
                 to="/notifications"
                 className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
                   isActive("/notifications") &&
-                  "border-indigo-500 text-gray-800 bg-gray-50"
+                  "!border-indigo-500 text-gray-800 bg-gray-50"
                 }`}
               >
                 <img
@@ -142,7 +142,7 @@ const Sidebar = () => {
                 to="/friends"
                 className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
                   isActive("/friends") &&
-                  "border-indigo-500 text-gray-800 bg-gray-50"
+                  "!border-indigo-500 text-gray-800 bg-gray-50"
                 }`}
               >
                 <img
@@ -160,7 +160,7 @@ const Sidebar = () => {
                 to="/messages"
                 className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
                   isActive("/messages") &&
-                  "border-indigo-500 text-gray-800 bg-gray-50"
+                  "!border-indigo-500 text-gray-800 bg-gray-50"
                 }`}
               >
                 <img
@@ -187,7 +187,8 @@ const Sidebar = () => {
               <Link
                 to="/profile"
                 className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
-                  isActive("/") && "border-indigo-500 text-gray-800 bg-gray-50"
+                  isActive("/profile") &&
+                  "!border-indigo-500 text-gray-800 bg-gray-50"
                 }`}
               >
                 <img
@@ -205,7 +206,7 @@ const Sidebar = () => {
                 to="/setting"
                 className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 ${
                   isActive("/setting") &&
-                  "border-indigo-500 text-gray-800 bg-gray-50"
+                  "!border-indigo-500 text-gray-800 bg-gray-50"
                 }`}
               >
                 <img

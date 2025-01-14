@@ -20,7 +20,7 @@ import Profile from "./pages/Profile.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-gray-50 text-gray-800">
+      <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased  text-gray-800">
         <Sidebar />
         <Routes>
           <Route path="/" element={<Feed />} />
