@@ -126,7 +126,7 @@ const Sidebar = () => {
                   Notifications
                 </span>
                 <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full">
-                  1.2k
+                  5
                 </span>
               </Link>
             </li>
