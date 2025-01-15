@@ -16,6 +16,8 @@ import Friends from "./pages/Friends.jsx";
 import Messages from "./pages/Messages.jsx";
 import Settings from "./pages/Settings.jsx";
 import Profile from "./pages/Profile.jsx";
+import FriendRequests from "./pages/subpages/FriendRequests.jsx";
+import MyFriends from "./pages/subpages/MyFriends.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -28,6 +30,8 @@ createRoot(document.getElementById("root")).render(
           <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="/notifications" element={<Notification />} />
           <Route path="/friends" element={<Friends />} />
+          <Route path="/friends/friend_requests" element={<FriendRequests />} />
+          <Route path="/friends/my_friends" element={<MyFriends />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/setting" element={<Settings />} />
