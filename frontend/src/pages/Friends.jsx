@@ -3,6 +3,8 @@ import Friendsicon from "../assets/icons/icons8-friend.svg";
 import PageHeader from "../components/PageHeader";
 import { FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { LuUserRoundSearch } from "react-icons/lu";
+import NewPeople from "../components/NewPeople";
 
 const Friends = () => {
   return (
@@ -36,6 +38,75 @@ const Friends = () => {
               <FaArrowRight className=" text-indigo-600 group-hover:scale-125 transition-all ease-in-out" />
             </div>
           </Link>
+        </div>
+      </div>
+
+      <div className=" w-full h-fit flex justify-center sm:justify-end">
+        <div className=" flex items-center gap-2">
+          <div className=" w-7 sm:w-12 h-7 sm:h-12 rounded-full p-2 bg-gray-50 sm:flex items-center justify-center">
+            <LuUserRoundSearch className=" size-4 sm:size-7 text-indigo-600" />
+          </div>
+
+          <input
+            type="text"
+            placeholder="search your friend"
+            className=" px-2 sm:px-4 py-1 sm:py-2 rounded-xl sm:rounded-3xl focus:outline-none text-sm sm:text-lg "
+          />
+        </div>
+      </div>
+
+      <div className=" w-full flex justify-center">
+        <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
+          <NewPeople />
         </div>
       </div>
     </div>
