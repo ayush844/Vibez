@@ -7,6 +7,8 @@ import { FaUserFriends } from "react-icons/fa";
 import FeedPost from "../components/FeedPost";
 import ProfileMedia from "../components/ProfileMedia";
 
+import defaultAvatar from "../assets/default_images/defaultProfile.png";
+
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("Posts");
 
@@ -23,9 +25,9 @@ const Profile = () => {
         </div>
         <div className=" px-4 sm:px-8">
           <div className=" flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
-            <div className=" w-28 sm:w-36 h-28 sm:h-36 rounded-full -mt-16 sm:-mt-12 border-2 border-purple-600">
+            <div className=" w-28 sm:w-36 h-28 sm:h-36 rounded-full -mt-16 sm:-mt-12 border-2 border-purple-600 p-0 bg-black overflow-hidden">
               <img
-                src="https://avatar.iran.liara.run/public/8"
+                src={defaultAvatar}
                 alt="profile pic"
                 className=" w-full h-full object-cover"
               />

@@ -1,5 +1,7 @@
 import React from "react";
 
+import defaultImage from "../assets/default_images/defaultProfile.png";
+
 const FriendRequestsBox = ({
   name = "Ayush Sharma",
   username = "ayush844",
@@ -7,9 +9,9 @@ const FriendRequestsBox = ({
   return (
     <div className=" rounded-md w-full h-fit px-4 py-4 bg-gray-50 flex justify-between items-center">
       <div className=" flex items-center gap-4">
-        <div className=" h-12 w-12 rounded-full">
+        <div className=" h-12 w-12 rounded-full overflow-hidden">
           <img
-            src="https://avatar.iran.liara.run/public/30"
+            src={defaultImage}
             className=" object-cover w-full h-full"
             alt="profile_pic"
           />

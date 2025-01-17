@@ -5,6 +5,7 @@ import { FaBookmark } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { FaRegCommentDots } from "react-icons/fa";
+import defaultImage from "../assets/default_images/defaultProfile.png";
 
 const FeedPost = ({
   text = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil provident voluptas neque tempore id placeat consequuntur molestias obcaecati. Ipsam earum culpa aliquid quidem commodi impedit esse odio, veritatis fugiat laborum itaque, tempora quo minus, illo deleniti! Ratione sequi eveniet quibusdam. ",
@@ -14,9 +15,9 @@ const FeedPost = ({
     <div className=" flex flex-col gap-3 sm:gap-6 px-2 sm:px-4 py-3 rounded-lg bg-gray-50">
       <div className=" flex items-center justify-between">
         <div className=" flex items-center gap-4">
-          <div className="h-8 w-8 hidden sm:flex sm:w-12 sm:h-12 rounded-full">
+          <div className="h-8 w-8 hidden sm:flex sm:w-12 sm:h-12 rounded-full overflow-hidden">
             <img
-              src="https://avatar.iran.liara.run/public/38"
+              src={defaultImage}
               className=" object-cover w-full h-full"
               alt=" user_profile"
             />

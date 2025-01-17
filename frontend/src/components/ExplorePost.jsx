@@ -1,5 +1,6 @@
 import React from "react";
 import { FaRegBookmark, FaRegCommentDots, FaRegHeart } from "react-icons/fa";
+import defaultImage from "../assets/default_images/defaultProfile.png";
 
 const ExplorePost = ({
   text = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil provident voluptas neque tempore id placeat consequuntur molestias obcaecati. Ipsam earum culpa aliquid quidem commodi impedit esse odio, veritatis fugiat laborum itaque, tempora quo minus, illo deleniti! Ratione sequi eveniet quibusdam.",
@@ -22,7 +23,7 @@ const ExplorePost = ({
           <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full overflow-hidden">
             <img
               className="object-cover w-full h-full"
-              src="https://avatar.iran.liara.run/public/3"
+              src={defaultImage}
               alt="profile_pic"
             />
           </div>

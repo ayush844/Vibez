@@ -1,16 +1,17 @@
 import React from "react";
 import { FaImage } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import defaultImage from "../assets/default_images/defaultProfile.png";
 
 const PostInput = () => {
   return (
     <div className=" flex flex-col gap-4 sm:gap-8 px-2 sm:px-4 py-3 rounded-lg bg-gray-50">
       <div className="flex gap-2 sm:gap-4 items-start">
-        <div className=" h-10 w-10 hidden sm:flex sm:w-16 sm:h-16 rounded-full">
+        <div className=" h-10 w-10 hidden sm:flex sm:w-16 sm:h-16 rounded-full overflow-hidden">
           <Link to="/profile" className="w-full h-full">
             <img
               className=" object-cover w-full h-full"
-              src="https://avatar.iran.liara.run/public/45"
+              src={defaultImage}
               alt="profile_pic"
             />
           </Link>

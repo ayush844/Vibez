@@ -1,13 +1,14 @@
 import React from "react";
 import { SlOptionsVertical } from "react-icons/sl";
+import defaultImage from "../assets/default_images/defaultProfile.png";
 
 const MyFriendBox = ({ name = "Ayush Sharma" }) => {
   return (
     <div className=" bg-gray-50  h-fit px-6 py-4 rounded-lg hover:shadow-md hover:scale-105 hover:shadow-purple-500 transition-all ease-in-out flex flex-col gap-4">
       <div className=" flex gap-4 items-center">
-        <div className=" w-14 h-14 rounded-full">
+        <div className=" w-14 h-14 rounded-full overflow-hidden">
           <img
-            src="https://avatar.iran.liara.run/public/37"
+            src={defaultImage}
             alt="profile_pic"
             className=" w-full h-full object-cover"
           />
