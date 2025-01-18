@@ -1,10 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
+import "./App.css";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import App from "./App.jsx";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Sidebar from "./components/Sidebar.jsx";
 
@@ -19,11 +18,21 @@ import Profile from "./pages/Profile.jsx";
 import FriendRequests from "./pages/subpages/FriendRequests.jsx";
 import MyFriends from "./pages/subpages/MyFriends.jsx";
 
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <BrowserRouter>
-      <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased  text-gray-800">
-        <Sidebar />
+import Login from "./pages/LogIn.jsx";
+import Signup from "./pages/SignUp.jsx";
+
+const App = () => {
+  const location = useLocation();
+
+  // Define paths where the Sidebar should NOT be displayed
+  const noSidebarPaths = ["/login", "/signup"];
+
+  const shouldShowSidebar = !noSidebarPaths.includes(location.pathname);
+
+  return (
+    <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased text-gray-800">
+      {shouldShowSidebar && <Sidebar />}
+      <div className={shouldShowSidebar ? "flex-1 p-4" : "w-full h-full"}>
         <Routes>
           <Route path="/" element={<Feed />} />
           <Route path="/explore" element={<Explore />} />
@@ -35,8 +44,20 @@ createRoot(document.getElementById("root")).render(
           <Route path="/messages" element={<Messages />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/setting" element={<Settings />} />
+
+          {/* Routes without Sidebar */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </div>
+    </div>
+  );
+};
+
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <BrowserRouter>
+      <App />
     </BrowserRouter>
   </StrictMode>
 );
