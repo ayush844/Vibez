@@ -7,6 +7,7 @@ import { FaUserFriends } from "react-icons/fa";
 import FeedPost from "../components/FeedPost";
 import ProfileMedia from "../components/ProfileMedia";
 
+import defaultCover from "../assets/default_images/defaultCover.jpg";
 import defaultAvatar from "../assets/default_images/defaultProfile.png";
 
 const Profile = () => {
@@ -16,11 +17,11 @@ const Profile = () => {
     <div className="flex flex-col gap-4 ">
       <PageHeader img={Profileicon} />
       <div className=" rounded-md bg-gray-50 overflow-x-hidden">
-        <div className=" w-full px-0 py-0 h-36 sm:h-48 rounded-md rounded-b-none">
+        <div className=" w-full px-0 py-0 h-36 sm:h-60 rounded-md rounded-b-none">
           <img
-            src="https://png.pngtree.com/thumb_back/fh260/background/20230707/pngtree-exploring-the-world-of-iot-devices-and-connections-in-a-3d-image_3766496.jpg"
+            src={defaultCover}
             alt="cover pic"
-            className=" w-full h-full object-cover rounded-md rounded-b-none "
+            className=" w-full h-full object-cover rounded-md rounded-b-none object-center "
           />
         </div>
         <div className=" px-4 sm:px-8">
