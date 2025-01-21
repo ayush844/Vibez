@@ -21,6 +21,7 @@ import MyFriends from "./pages/subpages/MyFriends.jsx";
 import Login from "./pages/LogIn.jsx";
 import Signup from "./pages/SignUp.jsx";
 import GlobalModal from "./components/modals/GlobalModal.jsx";
+import Post from "./pages/Post.jsx";
 
 const App = () => {
   const location = useLocation();
@@ -58,6 +59,7 @@ const App = () => {
           <Route path="/messages" element={<Messages />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/setting" element={<Settings />} />
+          <Route path="/post/:id" element={<Post />} />
 
           {/* Routes without Sidebar */}
           <Route path="/login" element={<Login />} />
