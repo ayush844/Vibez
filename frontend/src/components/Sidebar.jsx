@@ -11,7 +11,7 @@ import Settingsicon from "../assets/icons/icons8-settings.svg";
 import Logouticon from "../assets/icons/icons8-logout.svg";
 import { Link, useLocation } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({ setIsLogOutModalOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const location = useLocation();
@@ -222,6 +222,7 @@ const Sidebar = () => {
             <li>
               <a
                 href="#"
+                onClick={() => setIsLogOutModalOpen(true)}
                 className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
               >
                 <img

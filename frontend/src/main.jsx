@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import "./App.css";
@@ -20,6 +20,7 @@ import MyFriends from "./pages/subpages/MyFriends.jsx";
 
 import Login from "./pages/LogIn.jsx";
 import Signup from "./pages/SignUp.jsx";
+import GlobalModal from "./components/modals/GlobalModal.jsx";
 
 const App = () => {
   const location = useLocation();
@@ -29,9 +30,22 @@ const App = () => {
 
   const shouldShowSidebar = !noSidebarPaths.includes(location.pathname);
 
+  const [isLogOutModalOpen, setIsLogOutModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased text-gray-800">
-      {shouldShowSidebar && <Sidebar />}
+      {isLogOutModalOpen && (
+        <GlobalModal
+          heading={"Log Out"}
+          message={"are you sure you want to Log out?"}
+          buttonTxt={"Log Out"}
+          onClose={() => setIsLogOutModalOpen(false)}
+        />
+      )}
+
+      {shouldShowSidebar && (
+        <Sidebar setIsLogOutModalOpen={setIsLogOutModalOpen} />
+      )}
       <div className={shouldShowSidebar ? "flex-1 p-4" : "w-full h-full"}>
         <Routes>
           <Route path="/" element={<Feed />} />
