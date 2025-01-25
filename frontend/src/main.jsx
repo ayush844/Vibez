@@ -23,6 +23,8 @@ import Signup from "./pages/SignUp.jsx";
 import GlobalModal from "./components/modals/GlobalModal.jsx";
 import Post from "./pages/Post.jsx";
 
+import toast, { Toaster } from "react-hot-toast";
+
 const App = () => {
   const location = useLocation();
 
@@ -35,6 +37,8 @@ const App = () => {
 
   return (
     <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased text-gray-800">
+      <Toaster position="top-center" reverseOrder={false} />
+
       {isLogOutModalOpen && (
         <GlobalModal
           heading={"Log Out"}

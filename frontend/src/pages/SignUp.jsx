@@ -1,7 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 const SignUp = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const { username, email, password, confirmPassword } = formData;
+
+    if (!username || !email || !password || !confirmPassword) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:7000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          confirmPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.setItem("vibez_token", data?.data?.token);
+        toast.success("Registration successful!");
+        console.log("Response:", data.data);
+      } else {
+        toast.error(data.msg || "Registration failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      toast.error("Something went wrong. Please try again later.");
+    }
+  };
+
   return (
     <div className=" w-full h-screen flex items-center justify-center">
       <div className="grid md:grid-cols-3 items-center  rounded-xl overflow-hidden bg-white -translate-y-16 shadow-md shadow-indigo-600">
@@ -38,13 +94,15 @@ const SignUp = () => {
           <div className="space-y-6">
             <div className=" flex flex-col items-start w-full">
               <label className="text-gray-600 text-base font-medium mb-2 block">
-                Name
+                Username
               </label>
               <div className="relative flex items-center w-full">
                 <input
-                  name="name"
+                  name="username"
                   type="text"
-                  required=""
+                  required
+                  value={formData.username}
+                  onChange={handleChange}
                   className="text-gray-800 bg-white border border-gray-300 w-full text-sm pl-4 pr-8 py-2.5 rounded-md outline-blue-500"
                   placeholder="Enter name"
                 />
@@ -58,7 +116,9 @@ const SignUp = () => {
                 <input
                   name="email"
                   type="email"
-                  required=""
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
                   className="text-gray-800 bg-white border border-gray-300 w-full text-sm pl-4 pr-8 py-2.5 rounded-md outline-blue-500"
                   placeholder="Enter email"
                 />
@@ -72,7 +132,9 @@ const SignUp = () => {
                 <input
                   name="password"
                   type="password"
-                  required=""
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
                   className="text-gray-800 bg-white border border-gray-300 w-full text-sm pl-4 pr-8 py-2.5 rounded-md outline-blue-500"
                   placeholder="Enter password"
                 />
@@ -84,8 +146,10 @@ const SignUp = () => {
               </label>
               <div className="relative flex items-center w-full">
                 <input
-                  name="confirm_password"
+                  name="confirmPassword"
                   type="password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
                   required=""
                   className="text-gray-800 bg-white border border-gray-300 w-full text-sm pl-4 pr-8 py-2.5 rounded-md outline-blue-500"
                   placeholder="Confirm password"
@@ -95,8 +159,9 @@ const SignUp = () => {
           </div>
           <div className="mt-8">
             <button
-              type="button"
+              type="submit"
               className="w-full py-2.5 px-4 tracking-wider text-base font-bold rounded-md text-white  bg-gradient-to-r from-pink-600  to-indigo-500  focus:outline-none active:scale-90 transition-all ease-in-out"
+              onClick={handleSubmit}
             >
               Create an account
             </button>
