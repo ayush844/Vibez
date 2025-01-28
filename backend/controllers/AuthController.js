@@ -11,14 +11,17 @@ if (process.env.NODE_ENV === "production" && !process.env.JWT_SECRET) {
 
 // Sign Up
 export const registerUser = async (req, res) => {
-  const { username, email, password, confirmPassword } = req.body;
+  const { firstname, lastname, username, email, password, confirmPassword } =
+    req.body;
 
-  if (!username || !email || !password || !confirmPassword) {
+  if (!firstname || !username || !email || !password || !confirmPassword) {
     return res
       .status(400)
       .json({ success: false, msg: "All fields are required." });
   }
 
+  const trimmedFirstname = firstname.trim();
+  const trimmedLastname = lastname.trim();
   const trimmedUsername = username.trim();
   const normalizedEmail = email.trim().toLowerCase();
   const trimmedPassword = password.trim();
@@ -27,6 +30,7 @@ export const registerUser = async (req, res) => {
   try {
     // Validate input
     if (
+      !trimmedFirstname ||
       !trimmedUsername ||
       !normalizedEmail ||
       !trimmedPassword ||
@@ -41,6 +45,20 @@ export const registerUser = async (req, res) => {
       return res
         .status(400)
         .json({ success: false, msg: "Passwords do not match." });
+    }
+
+    if (trimmedFirstname.length > 20) {
+      return res.status(400).json({
+        success: false,
+        msg: "First name must be 20 characters or less.",
+      });
+    }
+
+    if (trimmedLastname.length > 20) {
+      return res.status(400).json({
+        success: false,
+        msg: "Last name must be 20 characters or less.",
+      });
     }
 
     // Validate username and password length
@@ -80,6 +98,8 @@ export const registerUser = async (req, res) => {
 
     // Create a new user
     const user = new User({
+      firstname: trimmedFirstname,
+      lastname: trimmedLastname,
       username: trimmedUsername,
       email: normalizedEmail,
       password: hashedPassword,

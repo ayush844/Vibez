@@ -34,7 +34,6 @@ const LogIn = () => {
       });
 
       console.log("hello 2");
-      console.log(formData);
       const data = await response.json();
 
       if (data.success) {
@@ -42,6 +41,7 @@ const LogIn = () => {
         localStorage.setItem("vibez_token", data?.data?.token);
         toast.success("Login successful!");
         console.log("Response:", data.data);
+        setFormData({ email: "", password: "" });
       } else {
         console.log("Hello 4");
         toast.error(data.msg || "Login failed. Please try again.");
@@ -50,6 +50,7 @@ const LogIn = () => {
       console.log("Hello 5");
       console.error("Error during login:", error);
       toast.error("Something went wrong. Please try again later.");
+      setFormData({ email: "", password: "" });
     }
   };
 
