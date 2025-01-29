@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
@@ -42,6 +45,7 @@ const LogIn = () => {
         toast.success("Login successful!");
         console.log("Response:", data.data);
         setFormData({ email: "", password: "" });
+        navigate("/");
       } else {
         console.log("Hello 4");
         toast.error(data.msg || "Login failed. Please try again.");

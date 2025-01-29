@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PageHeader from "../components/PageHeader";
 import Profileicon from "../assets/icons/icons8-male-user.svg";
 import { FaLink } from "react-icons/fa6";
@@ -9,8 +9,27 @@ import ProfileMedia from "../components/ProfileMedia";
 
 import defaultCover from "../assets/default_images/defaultCover.jpg";
 import defaultAvatar from "../assets/default_images/defaultProfile.png";
+import { getUserInfo } from "../utils/getLoggedInUser";
 
 const Profile = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const userInfo = await getUserInfo();
+        setUser(userInfo);
+        console.log(userInfo);
+      } catch (err) {
+        setError(err.message || "Failed to fetch user info.");
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
   const [activeTab, setActiveTab] = useState("Posts");
 
   return (
@@ -19,7 +38,7 @@ const Profile = () => {
       <div className=" rounded-md bg-gray-50 overflow-x-hidden">
         <div className=" w-full px-0 py-0 h-36 sm:h-60 rounded-md rounded-b-none">
           <img
-            src={defaultCover}
+            src={user?.coverPic}
             alt="cover pic"
             className=" w-full h-full object-cover rounded-md rounded-b-none object-center "
           />
@@ -28,7 +47,7 @@ const Profile = () => {
           <div className=" flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
             <div className=" w-28 sm:w-36 h-28 sm:h-36 rounded-full -mt-16 sm:-mt-12 border-2 border-purple-600 p-0 bg-black overflow-hidden">
               <img
-                src={defaultAvatar}
+                src={user?.profilePic}
                 alt="profile pic"
                 className=" w-full h-full object-cover"
               />
@@ -39,39 +58,43 @@ const Profile = () => {
             </button>
           </div>
           <div className=" flex flex-col items-center sm:items-start gap-1 my-6">
-            <h1 className=" font-bold text-xl sm:text-3xl">Ayush Sharma</h1>
+            <h1 className=" font-bold text-xl sm:text-3xl">
+              {user?.firstname + " " + user?.lastname}
+            </h1>
             <h3 className=" text-lg sm:text-xl font-semibold text-gray-500">
-              @ayush844
+              @{user?.username}
             </h3>
             <p className=" text-start line-clamp-5 text-sm sm:text-base font-normal sm:font-medium">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae,
-              atque fuga qui aspernatur debitis voluptas nisi, eius optio
-              recusandae impedit officia dolor sit amet consectetur, adipisicing
-              elit. Quae, atque fuga qui aspernatur debitis voluptas nisi, eius
-              optio recusandae impedit officia fugiat, sequi eaque. Velit ea
-              fuga impedit vitae sed!
+              {user?.bio}
             </p>
           </div>
-          <div className=" flex flex-col items-start gap-4 sm:gap-8">
-            <div className=" flex flex-col items-start sm:flex-row sm:items-center gap-2 sm:gap-4">
-              <div className=" flex items-center gap-1">
-                <MdLocationOn className=" size-4 sm:size-6 text-red-600" />
-                <span className=" font-semibold text-base sm:text-lg">
-                  Delhi, India
-                </span>
-              </div>
-              <div className="flex items-center gap-1 line-clamp-1">
-                <FaLink className=" size-4 sm:size-6 text-gray-700" />
-                <span className=" line-clamp-1 text-sm sm:text-base text-blue-700 hover:underline cursor-pointer">
-                  github.com/johndoe
-                </span>
-              </div>
-            </div>
 
+          <div className=" flex flex-col items-start gap-4 sm:gap-8">
+            {(user?.location || user?.link) && (
+              <div className=" flex flex-col items-start sm:flex-row sm:items-center gap-2 sm:gap-4">
+                {user?.location && (
+                  <div className=" flex items-center gap-1">
+                    <MdLocationOn className=" size-4 sm:size-6 text-red-600" />
+                    <span className=" font-semibold text-base sm:text-lg">
+                      Delhi, India
+                    </span>
+                  </div>
+                )}
+                {user?.link && (
+                  <div className="flex items-center gap-1 line-clamp-1">
+                    <FaLink className=" size-4 sm:size-6 text-gray-700" />
+                    <span className=" line-clamp-1 text-sm sm:text-base text-blue-700 hover:underline cursor-pointer">
+                      github.com/johndoe
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
             <div className=" flex items-center gap-2 mb-6">
               <FaUserFriends className=" size-4 sm:size-6 text-purple-600" />
               <h3 className=" text-lg sm:text-xl font-normal">
-                <span className=" font-bold">2,563</span> friends
+                <span className=" font-bold">{user?.followers.length}</span>{" "}
+                friends
               </h3>
             </div>
           </div>

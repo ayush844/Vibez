@@ -3,7 +3,13 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import "./App.css";
 
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 
 import Sidebar from "./components/Sidebar.jsx";
 
@@ -35,6 +41,24 @@ const App = () => {
 
   const [isLogOutModalOpen, setIsLogOutModalOpen] = useState(false);
 
+  const ProtectedRoute = ({ children }) => {
+    const user = localStorage.getItem("vibez_token");
+    if (user) {
+      return children;
+    } else {
+      return <Navigate to="/login" />;
+    }
+  };
+
+  const PublicRoute = ({ children }) => {
+    const user = localStorage.getItem("vibez_token");
+    if (user) {
+      return <Navigate to="/" />;
+    } else {
+      return children;
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased text-gray-800">
       <Toaster position="top-center" reverseOrder={false} />
@@ -53,21 +77,112 @@ const App = () => {
       )}
       <div className={shouldShowSidebar ? "flex-1 p-4" : "w-full h-full"}>
         <Routes>
-          <Route path="/" element={<Feed />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/bookmarks" element={<Bookmarks />} />
-          <Route path="/notifications" element={<Notification />} />
-          <Route path="/friends" element={<Friends />} />
-          <Route path="/friends/friend_requests" element={<FriendRequests />} />
-          <Route path="/friends/my_friends" element={<MyFriends />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/setting" element={<Settings />} />
-          <Route path="/post/:id" element={<Post />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Feed />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/explore"
+            element={
+              <ProtectedRoute>
+                <Explore />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bookmarks"
+            element={
+              <ProtectedRoute>
+                <Bookmarks />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <Notification />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/friends"
+            element={
+              <ProtectedRoute>
+                <Friends />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/friends/friend_requests"
+            element={
+              <ProtectedRoute>
+                <FriendRequests />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/friends/my_friends"
+            element={
+              <ProtectedRoute>
+                <MyFriends />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/messages"
+            element={
+              <ProtectedRoute>
+                <Messages />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/setting"
+            element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/post/:id"
+            element={
+              <ProtectedRoute>
+                <Post />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Routes without Sidebar */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <PublicRoute>
+                <Signup />
+              </PublicRoute>
+            }
+          />
         </Routes>
       </div>
     </div>
