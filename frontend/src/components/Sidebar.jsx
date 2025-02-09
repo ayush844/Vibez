@@ -9,7 +9,7 @@ import Messagesicon from "../assets/icons/icons8-message.svg";
 import Profileicon from "../assets/icons/icons8-male-user.svg";
 import Settingsicon from "../assets/icons/icons8-settings.svg";
 import Logouticon from "../assets/icons/icons8-logout.svg";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = ({ setIsLogOutModalOpen }) => {
   const [isOpen, setIsOpen] = useState(false);

@@ -9,6 +9,7 @@ import {
   Route,
   useLocation,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 
 import Sidebar from "./components/Sidebar.jsx";
@@ -39,6 +40,8 @@ const App = () => {
 
   const shouldShowSidebar = !noSidebarPaths.includes(location.pathname);
 
+  const navigate = useNavigate();
+
   const [isLogOutModalOpen, setIsLogOutModalOpen] = useState(false);
 
   const ProtectedRoute = ({ children }) => {
@@ -59,6 +62,27 @@ const App = () => {
     }
   };
 
+  const handleLogout = async () => {
+    console.log("hello from logout");
+    try {
+      const response = await fetch("http://localhost:7000/api/auth/logout");
+
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.removeItem("vibez_token");
+        toast.success("Logout successful!");
+        console.log("Response:", data.data);
+        navigate("/login");
+      } else {
+        toast.error(data.msg || "Logout failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      toast.error("Something went wrong. Please try again later.");
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased text-gray-800">
       <Toaster position="top-center" reverseOrder={false} />
@@ -69,6 +93,7 @@ const App = () => {
           message={"are you sure you want to Log out?"}
           buttonTxt={"Log Out"}
           onClose={() => setIsLogOutModalOpen(false)}
+          onClick={handleLogout}
         />
       )}
 

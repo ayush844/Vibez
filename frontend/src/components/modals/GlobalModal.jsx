@@ -1,10 +1,19 @@
 import React from "react";
 
-const GlobalModal = ({ heading, message, image, buttonTxt, onClose }) => {
+const GlobalModal = ({
+  heading,
+  message,
+  image,
+  buttonTxt,
+  onClose,
+  onClick,
+}) => {
   return (
     <div
       className="fixed top-0 left-0 w-full h-screen  bg-black bg-opacity-70 flex justify-center items-center z-50"
-      onClick={onClose}
+      onClick={() => {
+        onClose();
+      }}
     >
       <div
         className="relative max-w-4xl w-fit bg-gradient-to-r from-pink-600  to-indigo-500 rounded-lg p-10 flex flex-col items-center gap-4"
@@ -28,7 +37,10 @@ const GlobalModal = ({ heading, message, image, buttonTxt, onClose }) => {
 
         {buttonTxt && (
           <button
-            onClick={onClose}
+            onClick={() => {
+              onClick();
+              onClose();
+            }}
             className=" bg-red-600 text-white px-4 py-2 rounded-md uppercase font-bold hover:bg-red-700 transition-all ease-in-out active:scale-90"
           >
             {buttonTxt}

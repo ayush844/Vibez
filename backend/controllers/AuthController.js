@@ -191,3 +191,18 @@ export const loginUser = async (req, res) => {
       .json({ success: false, msg: "Server error. Please try again later." });
   }
 };
+
+// Logout
+export const logoutUser = async (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      msg: "User logged out successfully.",
+    });
+  } catch (error) {
+    console.error("Error logging out:", error);
+    res
+      .status(500)
+      .json({ success: false, msg: "Server error. Please try again later." });
+  }
+};
