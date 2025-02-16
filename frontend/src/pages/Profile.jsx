@@ -10,9 +10,12 @@ import ProfileMedia from "../components/ProfileMedia";
 import defaultCover from "../assets/default_images/defaultCover.jpg";
 import defaultAvatar from "../assets/default_images/defaultProfile.png";
 import { getUserInfo } from "../utils/getLoggedInUser";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -53,7 +56,10 @@ const Profile = () => {
               />
             </div>
 
-            <button className=" bg-purple-600 active:scale-90 transition-all ease-in-out hover:opacity-90 px-2 sm:px-4 py-1 sm:py-2 text-white rounded-md font-medium sm:font-bold">
+            <button
+              onClick={() => navigate("/setting")}
+              className=" bg-purple-600 active:scale-90 transition-all ease-in-out hover:opacity-90 px-2 sm:px-4 py-1 sm:py-2 text-white rounded-md font-medium sm:font-bold"
+            >
               Edit Profile
             </button>
           </div>
@@ -76,16 +82,20 @@ const Profile = () => {
                   <div className=" flex items-center gap-1">
                     <MdLocationOn className=" size-4 sm:size-6 text-red-600" />
                     <span className=" font-semibold text-base sm:text-lg">
-                      Delhi, India
+                      {user?.location.label}
                     </span>
                   </div>
                 )}
                 {user?.link && (
                   <div className="flex items-center gap-1 line-clamp-1">
                     <FaLink className=" size-4 sm:size-6 text-gray-700" />
-                    <span className=" line-clamp-1 text-sm sm:text-base text-blue-700 hover:underline cursor-pointer">
-                      github.com/johndoe
-                    </span>
+                    <a
+                      href={user?.link}
+                      target="_blank"
+                      className=" line-clamp-1 text-sm sm:text-base text-blue-700 hover:underline cursor-pointer"
+                    >
+                      {user?.link}
+                    </a>
                   </div>
                 )}
               </div>

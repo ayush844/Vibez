@@ -54,10 +54,15 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   const { id } = req.params;
 
-  const { username, bio, profilePic, coverPic } = req.body;
+  console.log("I am here");
+
+  const { firstname, lastname, bio, profilePic, coverPic, location, link } =
+    req.body;
 
   try {
     if (req.userId !== id) {
+      console.log("hello bhai");
+
       return res
         .status(403)
         .json({ msg: "Unauthorized to update this profile" });
@@ -65,7 +70,7 @@ export const updateUser = async (req, res) => {
 
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { username, bio, profilePic, coverPic },
+      { firstname, lastname, bio, profilePic, coverPic, location, link },
       { new: true }
     ).select("-password");
 

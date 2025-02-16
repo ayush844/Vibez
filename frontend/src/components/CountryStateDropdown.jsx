@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import Select from "react-select";
 
-const CountryStateDropdown = () => {
+const CountryStateDropdown = ({ value, onChange }) => {
   const [dataFetched, setDataFetched] = useState(false); // To ensure we fetch only once
   const [options, setOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -49,7 +49,9 @@ const CountryStateDropdown = () => {
   const memoizedOptions = useMemo(() => options, [options]);
 
   const handleChange = (selected) => {
+    console.log("selected from handleChange", selected);
     setSelectedOption(selected);
+    onChange(selected);
   };
 
   return (
@@ -60,7 +62,7 @@ const CountryStateDropdown = () => {
         </label>
         <Select
           options={memoizedOptions}
-          value={selectedOption}
+          value={value || selectedOption}
           onChange={handleChange}
           placeholder="Type to search..."
           className="shadow-sm focus:outline-purple-600"
@@ -73,12 +75,6 @@ const CountryStateDropdown = () => {
           }}
         />
       </div>
-      {/* {selectedOption && (
-        <div className="mt-4 text-center">
-          <h3 className="text-lg font-semibold">You selected:</h3>
-          <p>{selectedOption.label}</p>
-        </div>
-      )} */}
     </div>
   );
 };

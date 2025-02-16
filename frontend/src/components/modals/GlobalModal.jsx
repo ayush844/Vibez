@@ -16,13 +16,13 @@ const GlobalModal = ({
       }}
     >
       <div
-        className="relative max-w-4xl w-fit bg-gradient-to-r from-pink-600  to-indigo-500 rounded-lg p-10 flex flex-col items-center gap-4"
+        className="relative max-w-4xl w-fit  bg-white rounded-lg border-2 border-gray-500 p-10 flex flex-col items-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <h1 className=" text-2xl sm:text-4xl font-normal text-white uppercase">
+        <h1 className=" text-2xl sm:text-4xl font-normal uppercase   bg-gradient-to-r from-pink-600 to-indigo-500 inline-block text-transparent bg-clip-text">
           {heading}
         </h1>
-        <p className=" text-gray-100 text-lg sm:text-2xl font-medium">
+        <p className=" text-lg sm:text-2xl font-medium text-gray-800">
           {message}
         </p>
         {image && (
