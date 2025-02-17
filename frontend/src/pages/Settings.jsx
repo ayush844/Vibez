@@ -9,8 +9,8 @@ import { RxAvatar } from "react-icons/rx";
 import { getUserInfo } from "../utils/getLoggedInUser";
 import toast from "react-hot-toast";
 
-const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dlyqjzp9t/image/upload";
-const CLOUDINARY_PRESET = "vibezPic"; // Set in Cloudinary settings
+const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_URL;
+const CLOUDINARY_PRESET = import.meta.env.VITE_CLOUDINARY_PRESET; // Set in Cloudinary settings
 
 const Settings = () => {
   const [userid, setUserid] = useState(null);
