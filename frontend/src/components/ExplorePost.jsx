@@ -2,10 +2,7 @@ import React from "react";
 import { FaRegBookmark, FaRegCommentDots, FaRegHeart } from "react-icons/fa";
 import defaultImage from "../assets/default_images/defaultProfile.png";
 
-const ExplorePost = ({
-  text = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil provident voluptas neque tempore id placeat consequuntur molestias obcaecati. Ipsam earum culpa aliquid quidem commodi impedit esse odio, veritatis fugiat laborum itaque, tempora quo minus, illo deleniti! Ratione sequi eveniet quibusdam.",
-  img,
-}) => {
+const ExplorePost = ({ content, img, profilePic, name, username }) => {
   return (
     <div className="bg-gray-50 rounded-lg shadow h-fit">
       {img && (
@@ -23,20 +20,24 @@ const ExplorePost = ({
           <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full overflow-hidden">
             <img
               className="object-cover w-full h-full"
-              src={defaultImage}
+              src={profilePic || defaultImage}
               alt="profile_pic"
             />
           </div>
           <div className="flex flex-col items-start">
             <h2 className="font-bold text-lg hover:underline cursor-pointer">
-              Ayush Sharma
+              {name || "anonymous"}
             </h2>
-            <p className="text-gray-600">@ayush844</p>
+            <p className="text-gray-600">
+              {username ? "@" + username : "@anonymous"}
+            </p>
           </div>
         </div>
-        <div>
-          <p className="line-clamp-4 text-gray-800 text-start">{text}</p>
-        </div>
+        {content && (
+          <div>
+            <p className="line-clamp-4 text-gray-800 text-start">{content}</p>
+          </div>
+        )}
         <div className="flex items-center justify-between mt-4">
           <div className="flex gap-2 items-center">
             <FaRegHeart className="text-xl cursor-pointer hover:text-red-600" />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Exploreicon from "../assets/icons/icons8-explore.svg";
 import PageHeader from "../components/PageHeader";
 import ExplorePost from "../components/ExplorePost";
@@ -12,6 +12,31 @@ const Explore = () => {
     640: 1,
   };
 
+  const [allPosts, setAllPosts] = useState([]);
+
+  useEffect(() => {
+    const getAllPosts = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:7000/api/post/allPosts`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setAllPosts(data);
+      } catch (error) {
+        console.error("Error during fetching explore posts:", error);
+        toast.error("Something went wrong while fetching posts");
+      }
+    };
+
+    getAllPosts();
+  }, []);
+
   return (
     <div className=" flex flex-col gap-8">
       <PageHeader img={Exploreicon} />
@@ -20,6 +45,19 @@ const Explore = () => {
         className="flex gap-4"
         columnClassName="flex flex-col gap-4"
       >
+        {allPosts.length > 0 &&
+          allPosts.map((post) => (
+            <ExplorePost
+              key={post._id}
+              img={post.image}
+              postId={post._id}
+              userId={post.userId}
+              content={post.content}
+              name={`${post.userId.firstname} ${post.userId.lastname}`}
+              profilePic={post.userId.profilePic}
+              username={post.userId.username}
+            />
+          ))}
         <ExplorePost
           img={
             "https://www.edeltaes.com/wp-content/themes/wp-bootstrap-4/assets/images/default-image.jpg"
