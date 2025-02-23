@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
+  const [userPosts, setUserPosts] = useState(null);
+  const [userPostsMedias, setUserPostsMedias] = useState([]);
 
   const navigate = useNavigate();
 
@@ -32,6 +34,39 @@ const Profile = () => {
 
     fetchUserInfo();
   }, []);
+
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:7000/api/user/${user._id}/posts`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setUserPosts(data.posts);
+
+        const imageUrls = data.posts
+          .map((post) => post.image)
+          .filter((image) => image !== null);
+
+        setUserPostsMedias(imageUrls);
+      } catch (error) {
+        console.error("Error during fetching user posts:", error);
+        toast.error("Something went wrong while fetching user's posts");
+      }
+    };
+
+    if (user) {
+      fetchUserPosts();
+    }
+  }, [user]);
+
+  console.log("users posts", userPosts);
 
   const [activeTab, setActiveTab] = useState("Posts");
 
@@ -137,31 +172,25 @@ const Profile = () => {
       <div className="flex flex-col gap-4">
         {activeTab === "Posts" ? (
           <>
-            <FeedPost img="https://preview.redd.it/e6ieo2wrmnu71.jpg?width=626&format=pjpg&auto=webp&s=4122c3ec38d1ec0ec2969cb6d87b39869167d7c3" />
-            <FeedPost text="hello ji!!" />
-            <FeedPost
-              text="I like this girl"
-              img="https://thumbs.dreamstime.com/b/colorful-numbers-background-abstract-random-31850879.jpg"
-            />
-            <FeedPost img="https://img.lovepik.com/bg/20240408/Vibrant-Multicolored-Abstract-Building-3D-Render-as-a-Random-Blocks_5804357_wh1200.jpg" />
+            {userPosts?.map((post) => (
+              <FeedPost
+                key={post._id}
+                text={post.content}
+                img={post.image}
+                profilePic={user.profilePic}
+                name={`${user?.firstname} ${user?.lastname}`}
+                date={post.createdAt}
+              />
+            ))}
           </>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3">
-            <ProfileMedia image="https://images.unsplash.com/photo-1512331455279-c8ae8178f586?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1670233169914-00a9ccb25f68?q=80&w=2128&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1579568729229-d251ed159405?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1598186284297-a7d54c8c50d4?q=80&w=2128&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1599186002983-61357b3339a7?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1731143727589-1e6f583ee4a6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1579568729229-d251ed159405?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1598186284297-a7d54c8c50d4?q=80&w=2128&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1599186002983-61357b3339a7?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1731143727589-1e6f583ee4a6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1512331455279-c8ae8178f586?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1670233169914-00a9ccb25f68?q=80&w=2128&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1579568729229-d251ed159405?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <ProfileMedia image="https://images.unsplash.com/photo-1598186284297-a7d54c8c50d4?q=80&w=2128&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-          </div>
+          userPostsMedias.length > 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3">
+              {userPostsMedias.map((media, index) => (
+                <ProfileMedia key={index} image={media} />
+              ))}
+            </div>
+          )
         )}
       </div>
     </div>

@@ -7,26 +7,43 @@ import { FaHeart } from "react-icons/fa";
 import { FaRegCommentDots } from "react-icons/fa";
 import defaultImage from "../assets/default_images/defaultProfile.png";
 
-const FeedPost = ({
-  text = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil provident voluptas neque tempore id placeat consequuntur molestias obcaecati. Ipsam earum culpa aliquid quidem commodi impedit esse odio, veritatis fugiat laborum itaque, tempora quo minus, illo deleniti! Ratione sequi eveniet quibusdam. ",
-  img,
-}) => {
+const formatDate = (isoString) => {
+  const date = new Date(isoString);
+
+  // Extract formatted time (HH:mm)
+  const time = date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false, // 24-hour format
+  });
+
+  // Extract formatted date (MMM DD, YYYY)
+  const formattedDate = date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+
+  return `${time} | ${formattedDate}`;
+};
+
+const FeedPost = ({ text, img, profilePic, name, date }) => {
   return (
     <div className=" flex flex-col gap-3 sm:gap-6 px-2 sm:px-4 py-3 rounded-lg bg-gray-50">
       <div className=" flex items-center justify-between">
         <div className=" flex items-center gap-4">
           <div className="h-8 w-8 hidden sm:flex sm:w-12 sm:h-12 rounded-full overflow-hidden">
             <img
-              src={defaultImage}
+              src={profilePic || defaultImage}
               className=" object-cover w-full h-full"
               alt=" user_profile"
             />
           </div>
           <div className=" flex flex-col items-start">
             <h2 className=" font-bold text-lg cursor-pointer hover:underline">
-              Ayush Sharma
+              {name}
             </h2>
-            <p className=" text-gray-500">Dec 13, 2023</p>
+            <p className=" text-gray-500">{formatDate(date)}</p>
           </div>
         </div>
         <div className=" border border-gray-600 p-2 rounded-lg">

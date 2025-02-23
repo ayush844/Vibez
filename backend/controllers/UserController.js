@@ -85,12 +85,21 @@ export const getUserPosts = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await User.findById(id).populate("posts");
+    const user = await User.findById(id)
+      .populate({
+        path: "posts",
+        options: { sort: { createdAt: -1 } }, // Sorting in descending order (newest first)
+      })
+      .select("firstname lastname _id profilePic");
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    res.json(user.posts);
+    res.json({
+      name: user.name,
+      profilePic: user.profilePic,
+      posts: user.posts,
+    });
   } catch (error) {
     console.error("Error fetching user posts:", error);
     res.status(500).json({ msg: "Server error" });
