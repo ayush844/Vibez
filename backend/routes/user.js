@@ -5,6 +5,7 @@ import {
   followUser,
   getLoggedInUserInfo,
   getUser,
+  getUserPosts,
   unfollowUser,
   updateUser,
 } from "../controllers/UserController.js";
@@ -19,6 +20,9 @@ router.get("/:id", authMiddleware, getUser);
 
 // Update user profile
 router.put("/:id", authMiddleware, updateUser);
+
+// get all posts of a user
+router.get("/:id/posts", authMiddleware, getUserPosts);
 
 // Follow a user
 router.post("/follow/:id", authMiddleware, followUser);
