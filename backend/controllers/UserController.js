@@ -1,3 +1,4 @@
+import Post from "../models/Post.js";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 
@@ -191,6 +192,63 @@ export const deleteUser = async (req, res) => {
     res.json({ msg: "User deleted successfully" });
   } catch (error) {
     console.error("Error deleting user:", error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+// toggle bookmarks
+
+export const toggleBookmark = async (req, res) => {
+  try {
+    const { postId } = req.body; // Get user ID and post ID from request
+    const userId = req.userId;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    const postExists = await Post.findById(postId);
+
+    if (!postExists) {
+      return res.status(404).json({ msg: "Post not found" });
+    }
+
+    // Check if post is already bookmarked
+    if (user.bookmarks.includes(postId)) {
+      user.bookmarks = user.bookmarks.filter((id) => id.toString() !== postId);
+      await user.save();
+      return res.json({
+        msg: "Bookmark removed",
+        bookmarks: user.bookmarks,
+      });
+    } else {
+      user.bookmarks.push(postId);
+      await user.save();
+      return res.json({ msg: "Bookmark added", bookmarks: user.bookmarks });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+// get all bookmarks
+export const getBookmarks = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId).populate({
+      path: "bookmarks",
+      options: { sort: { createdAt: -1 } }, // Sorting in descending order (newest first)
+    });
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    res.json({ bookmarks: user.bookmarks });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ msg: "Server error" });
   }
 };
