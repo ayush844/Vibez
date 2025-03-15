@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   FaBookmark,
+  FaHeart,
   FaRegBookmark,
   FaRegCommentDots,
   FaRegHeart,
@@ -17,7 +18,12 @@ const ExplorePost = ({
   username,
   isBookmarked,
   onToggleBookmark,
+  isLiked,
+  onToggleLike,
+  likesCount,
 }) => {
+  const [likesCnt, setLikesCnt] = useState(likesCount);
+
   const toggleBookmark = async () => {
     try {
       const response = await fetch(
@@ -37,6 +43,27 @@ const ExplorePost = ({
     } catch (error) {
       console.error("Error during bookmarking the posts:", error);
       toast.error("Something went wrong while trying to Bookmark post");
+    }
+  };
+
+  const toggleLike = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:7000/api/post/${postId}/like`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      toast.success(data?.msg);
+      onToggleLike(postId);
+      setLikesCnt(data?.post?.likes?.length);
+    } catch (error) {
+      console.error("Error during liking the posts:", error);
+      toast.error("Something went wrong while trying to like the post");
     }
   };
 
@@ -77,8 +104,20 @@ const ExplorePost = ({
         )}
         <div className="flex items-center justify-between mt-4">
           <div className="flex gap-2 items-center">
-            <FaRegHeart className="text-xl cursor-pointer hover:text-red-600" />
-            <span className="text-base">15</span>
+            {isLiked ? (
+              <FaHeart
+                onClick={toggleLike}
+                className="text-xl cursor-pointer text-red-600 hover:text-red-500"
+              />
+            ) : (
+              <FaRegHeart
+                onClick={toggleLike}
+                className="text-xl cursor-pointer hover:text-red-600"
+              />
+            )}
+            <span className="text-base">{likesCnt}</span>
+            {/* <FaRegHeart className="text-xl cursor-pointer hover:text-red-600" />
+            <span className="text-base">{likesCnt}</span> */}
           </div>
           <div className="flex gap-2 items-center">
             <FaRegCommentDots className="text-xl cursor-pointer hover:text-blue-500" />

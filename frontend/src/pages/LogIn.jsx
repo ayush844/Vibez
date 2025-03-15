@@ -42,6 +42,7 @@ const LogIn = () => {
       if (data.success) {
         console.log("hello 3");
         localStorage.setItem("vibez_token", data?.data?.token);
+        localStorage.setItem("vibez_userid", data?.data?.user?.id);
         toast.success("Login successful!");
         console.log("Response:", data.data);
         setFormData({ email: "", password: "" });

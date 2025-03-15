@@ -15,6 +15,8 @@ const Explore = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
 
+  const userId = localStorage.getItem("vibez_userid");
+
   useEffect(() => {
     const getAllPosts = async () => {
       try {
@@ -72,6 +74,21 @@ const Explore = () => {
     );
   };
 
+  const toggleLike = (postId) => {
+    setAllPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post._id === postId
+          ? {
+              ...post,
+              likes: post.likes.includes(userId)
+                ? post.likes.filter((id) => id !== userId) // Unlike
+                : [...post.likes, userId], // Like
+            }
+          : post
+      )
+    );
+  };
+
   return (
     <div className=" flex flex-col gap-8">
       <PageHeader img={Exploreicon} />
@@ -93,6 +110,9 @@ const Explore = () => {
               username={post.userId.username}
               isBookmarked={isPostBookmarked(post._id)}
               onToggleBookmark={toggleBookmark}
+              isLiked={post.likes.includes(userId)}
+              onToggleLike={toggleLike}
+              likesCount={post.likes.length}
             />
           ))}
         <ExplorePost

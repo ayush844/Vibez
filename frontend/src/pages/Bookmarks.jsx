@@ -8,6 +8,8 @@ import toast from "react-hot-toast";
 const Bookmarks = () => {
   const [bookmarkPosts, setBookmarkPosts] = useState([]);
 
+  const userId = localStorage.getItem("vibez_userid");
+
   useEffect(() => {
     const getAllBookmarkPosts = async () => {
       try {
@@ -49,6 +51,8 @@ const Bookmarks = () => {
               name={`${post.userId.firstname} ${post.userId.lastname}`}
               date={post.createdAt}
               isBookmarked={post.isBookmarked}
+              isLiked={post.likes.includes(userId)}
+              likesCount={post.likes.length}
             />
           ))}
         </>

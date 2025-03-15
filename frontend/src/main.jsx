@@ -71,6 +71,7 @@ const App = () => {
 
       if (data.success) {
         localStorage.removeItem("vibez_token");
+        localStorage.removeItem("vibez_userid");
         toast.success("Logout successful!");
         console.log("Response:", data.data);
         navigate("/login");

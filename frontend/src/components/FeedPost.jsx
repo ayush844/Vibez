@@ -17,8 +17,14 @@ const FeedPost = ({
   date,
   isBookmarked,
   postId,
+  isLiked,
+  likesCount,
 }) => {
   const [postBookmarked, setPostBookmarked] = useState(isBookmarked);
+
+  const [postLiked, setPostLiked] = useState(isLiked);
+
+  const [likesCnt, setLikesCnt] = useState(likesCount);
 
   const toggleBookmark = async () => {
     try {
@@ -42,6 +48,27 @@ const FeedPost = ({
     }
   };
 
+  const toggleLike = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:7000/api/post/${postId}/like`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      toast.success(data?.msg);
+      setPostLiked((prev) => !prev);
+      setLikesCnt(data?.post?.likes?.length);
+    } catch (error) {
+      console.error("Error during liking/disliking the posts:", error);
+      toast.error("Something went wrong while trying to like/dislike the post");
+    }
+  };
+
   return (
     <div className=" flex flex-col gap-3 sm:gap-6 px-2 sm:px-4 py-3 rounded-lg bg-gray-50">
       <div className=" flex items-center justify-between">
@@ -61,7 +88,7 @@ const FeedPost = ({
           </div>
         </div>
         <div className=" border border-gray-600 p-2 rounded-lg">
-          {isBookmarked && postBookmarked ? (
+          {postBookmarked ? (
             <FaBookmark
               onClick={toggleBookmark}
               className=" size-5 cursor-pointer text-purple-700 hover:text-purple-600"
@@ -87,8 +114,20 @@ const FeedPost = ({
 
       <div className=" flex items-center justify-start gap-8">
         <div className=" flex gap-1 ">
-          <FaRegHeart className=" size-7 hover:text-red-600 cursor-pointer" />
-          <span className=" text-base hover:underline cursor-pointer">15</span>
+          {postLiked ? (
+            <FaHeart
+              onClick={toggleLike}
+              className=" size-7 cursor-pointer text-red-600 hover:text-red-500"
+            />
+          ) : (
+            <FaRegHeart
+              onClick={toggleLike}
+              className=" size-7 cursor-pointer hover:text-red-600"
+            />
+          )}
+          <span className=" text-base hover:underline cursor-pointer">
+            {likesCnt}
+          </span>
         </div>
         <div className=" flex gap-1 ">
           <FaRegCommentDots className=" size-7 cursor-pointer hover:text-blue-500" />

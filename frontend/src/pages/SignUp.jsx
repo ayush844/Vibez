@@ -54,6 +54,7 @@ const SignUp = () => {
 
       if (data.success) {
         localStorage.setItem("vibez_token", data?.data?.token);
+        localStorage.setItem("vibez_userid", data?.data?.user?.id);
         toast.success("Registration successful!");
 
         console.log("Response:", data.data);
