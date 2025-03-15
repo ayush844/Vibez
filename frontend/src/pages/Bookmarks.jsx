@@ -1,31 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Bookmarksicon from "../assets/icons/icons8-bookmark.svg";
 import PageHeader from "../components/PageHeader";
 import FeedPost from "../components/FeedPost";
+import toast from "react-hot-toast";
 
 const Bookmarks = () => {
+  const [bookmarkPosts, setBookmarkPosts] = useState([]);
+
+  useEffect(() => {
+    const getAllBookmarkPosts = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:7000/api/user/myBookmarks`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setBookmarkPosts(data.bookmarks);
+      } catch (error) {
+        console.error("Error during fetching bookmark posts:", error);
+        toast.error("Something went wrong while fetching Bookmarks");
+      }
+    };
+
+    getAllBookmarkPosts();
+  }, []);
+
+  console.log("bookmarks: ", bookmarkPosts);
+
   return (
     <div className=" flex flex-col gap-8">
       <PageHeader img={Bookmarksicon} />
-      <FeedPost img="https://images.wondershare.com/virtulook/articles/random-background-generator-2.jpg" />
-      <FeedPost text="hello ji!!" />
-      <FeedPost
-        text="I like this girl"
-        img="https://i.pinimg.com/474x/93/70/43/937043dc1dc8eea232b14138de21cc18.jpg"
-      />
-      <FeedPost img="https://preview.redd.it/e6ieo2wrmnu71.jpg?width=626&format=pjpg&auto=webp&s=4122c3ec38d1ec0ec2969cb6d87b39869167d7c3" />
-      <FeedPost text="hello ji!!" />
-      <FeedPost
-        text="I like this girl"
-        img="https://thumbs.dreamstime.com/b/colorful-numbers-background-abstract-random-31850879.jpg"
-      />
-      <FeedPost img="https://img.lovepik.com/bg/20240408/Vibrant-Multicolored-Abstract-Building-3D-Render-as-a-Random-Blocks_5804357_wh1200.jpg" />
-      <FeedPost text="hello ji!!" />
-      <FeedPost
-        text="I like this girl"
-        img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxEMslRkfk9qqZ7YIBtNUlelOrzqFCbDR5Hw&s"
-      />
+
+      {bookmarkPosts.length > 0 ? (
+        <>
+          {bookmarkPosts.map((post) => (
+            <FeedPost
+              key={post._id}
+              postId={post._id}
+              img={post.image}
+              text={post.content}
+              profilePic={post.userId.profilePic}
+              name={`${post.userId.firstname} ${post.userId.lastname}`}
+              date={post.createdAt}
+              isBookmarked={post.isBookmarked}
+            />
+          ))}
+        </>
+      ) : (
+        <>
+          <h1>No post bookmarked yet !</h1>
+        </>
+      )}
     </div>
   );
 };

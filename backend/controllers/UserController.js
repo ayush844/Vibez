@@ -214,19 +214,23 @@ export const toggleBookmark = async (req, res) => {
       return res.status(404).json({ msg: "Post not found" });
     }
 
+    let isBookmarked = false;
+
     // Check if post is already bookmarked
     if (user.bookmarks.includes(postId)) {
       user.bookmarks = user.bookmarks.filter((id) => id.toString() !== postId);
-      await user.save();
-      return res.json({
-        msg: "Bookmark removed",
-        bookmarks: user.bookmarks,
-      });
+      isBookmarked = false;
     } else {
       user.bookmarks.push(postId);
-      await user.save();
-      return res.json({ msg: "Bookmark added", bookmarks: user.bookmarks });
+      isBookmarked = true;
     }
+
+    await user.save();
+    return res.json({
+      msg: isBookmarked ? "Bookmark added" : "Bookmark removed",
+      isBookmarked,
+      bookmarks: user.bookmarks,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Server error" });
@@ -239,6 +243,10 @@ export const getBookmarks = async (req, res) => {
     const userId = req.userId;
     const user = await User.findById(userId).populate({
       path: "bookmarks",
+      populate: {
+        path: "userId",
+        select: "firstname lastname profilePic _id username",
+      },
       options: { sort: { createdAt: -1 } }, // Sorting in descending order (newest first)
     });
 
@@ -246,7 +254,13 @@ export const getBookmarks = async (req, res) => {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    res.json({ bookmarks: user.bookmarks });
+    // Attach isBookmarked = true to each post
+    const bookmarksWithStatus = user.bookmarks.map((post) => ({
+      ...post.toObject(), // Convert Mongoose document to plain object
+      isBookmarked: true,
+    }));
+
+    res.json({ bookmarks: bookmarksWithStatus });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Server error" });

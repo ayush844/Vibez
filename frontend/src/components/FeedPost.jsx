@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { FaRegBookmark } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa";
@@ -6,28 +6,42 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { FaRegCommentDots } from "react-icons/fa";
 import defaultImage from "../assets/default_images/defaultProfile.png";
+import { formatDate } from "../utils/formatDate";
+import toast from "react-hot-toast";
 
-const formatDate = (isoString) => {
-  const date = new Date(isoString);
+const FeedPost = ({
+  text,
+  img,
+  profilePic,
+  name,
+  date,
+  isBookmarked,
+  postId,
+}) => {
+  const [postBookmarked, setPostBookmarked] = useState(isBookmarked);
 
-  // Extract formatted time (HH:mm)
-  const time = date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false, // 24-hour format
-  });
+  const toggleBookmark = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:7000/api/user/bookmarkPost`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ postId: postId }),
+        }
+      );
+      const data = await response.json();
+      toast.success(data.msg);
+      setPostBookmarked((prev) => !prev);
+    } catch (error) {
+      console.error("Error while toggling bookmark", error);
+      toast.error("Error while toggling bookmark");
+    }
+  };
 
-  // Extract formatted date (MMM DD, YYYY)
-  const formattedDate = date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  });
-
-  return `${time} | ${formattedDate}`;
-};
-
-const FeedPost = ({ text, img, profilePic, name, date }) => {
   return (
     <div className=" flex flex-col gap-3 sm:gap-6 px-2 sm:px-4 py-3 rounded-lg bg-gray-50">
       <div className=" flex items-center justify-between">
@@ -47,7 +61,17 @@ const FeedPost = ({ text, img, profilePic, name, date }) => {
           </div>
         </div>
         <div className=" border border-gray-600 p-2 rounded-lg">
-          <FaRegBookmark className=" size-5 cursor-pointer hover:text-purple-600" />
+          {isBookmarked && postBookmarked ? (
+            <FaBookmark
+              onClick={toggleBookmark}
+              className=" size-5 cursor-pointer text-purple-700 hover:text-purple-600"
+            />
+          ) : (
+            <FaRegBookmark
+              onClick={toggleBookmark}
+              className=" size-5 cursor-pointer hover:text-purple-600"
+            />
+          )}
         </div>
       </div>
       {img && (

@@ -1,8 +1,45 @@
-import React from "react";
-import { FaRegBookmark, FaRegCommentDots, FaRegHeart } from "react-icons/fa";
+import React, { useState } from "react";
+import {
+  FaBookmark,
+  FaRegBookmark,
+  FaRegCommentDots,
+  FaRegHeart,
+} from "react-icons/fa";
 import defaultImage from "../assets/default_images/defaultProfile.png";
+import toast from "react-hot-toast";
 
-const ExplorePost = ({ content, img, profilePic, name, username }) => {
+const ExplorePost = ({
+  postId,
+  content,
+  img,
+  profilePic,
+  name,
+  username,
+  isBookmarked,
+  onToggleBookmark,
+}) => {
+  const toggleBookmark = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:7000/api/user/bookmarkPost`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ postId: postId }),
+        }
+      );
+      const data = await response.json();
+      toast.success(data.msg);
+      onToggleBookmark(postId);
+    } catch (error) {
+      console.error("Error during bookmarking the posts:", error);
+      toast.error("Something went wrong while trying to Bookmark post");
+    }
+  };
+
   return (
     <div className="bg-gray-50 rounded-lg shadow h-fit">
       {img && (
@@ -47,7 +84,17 @@ const ExplorePost = ({ content, img, profilePic, name, username }) => {
             <FaRegCommentDots className="text-xl cursor-pointer hover:text-blue-500" />
             <span className="text-base">5</span>
           </div>
-          <FaRegBookmark className="text-xl cursor-pointer hover:text-purple-600" />
+          {isBookmarked ? (
+            <FaBookmark
+              onClick={toggleBookmark}
+              className="text-xl cursor-pointer text-purple-700 hover:text-purple-600"
+            />
+          ) : (
+            <FaRegBookmark
+              onClick={toggleBookmark}
+              className="text-xl cursor-pointer hover:text-purple-600"
+            />
+          )}
         </div>
       </div>
     </div>

@@ -13,6 +13,7 @@ const Explore = () => {
   };
 
   const [allPosts, setAllPosts] = useState([]);
+  const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
 
   useEffect(() => {
     const getAllPosts = async () => {
@@ -34,8 +35,42 @@ const Explore = () => {
       }
     };
 
+    const getBookmarkedPosts = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:7000/api/user/myBookmarks`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setBookmarkedPosts(data.bookmarks.map((post) => post._id));
+        console.log("Bookmarked posts: >>>>> ", data.bookmarks);
+      } catch (error) {
+        console.error("Error during fetching explore posts:", error);
+        toast.error("Something went wrong while fetching posts");
+      }
+    };
+
     getAllPosts();
+    getBookmarkedPosts();
   }, []);
+
+  function isPostBookmarked(postId) {
+    console.log(bookmarkedPosts.includes(postId), postId);
+    return bookmarkedPosts.includes(postId);
+  }
+
+  const toggleBookmark = (postId) => {
+    setBookmarkedPosts((prev) =>
+      prev.includes(postId)
+        ? prev.filter((id) => id !== postId)
+        : [...prev, postId]
+    );
+  };
 
   return (
     <div className=" flex flex-col gap-8">
@@ -56,6 +91,8 @@ const Explore = () => {
               name={`${post.userId.firstname} ${post.userId.lastname}`}
               profilePic={post.userId.profilePic}
               username={post.userId.username}
+              isBookmarked={isPostBookmarked(post._id)}
+              onToggleBookmark={toggleBookmark}
             />
           ))}
         <ExplorePost
