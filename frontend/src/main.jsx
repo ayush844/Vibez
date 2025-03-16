@@ -31,6 +31,7 @@ import GlobalModal from "./components/modals/GlobalModal.jsx";
 import Post from "./pages/Post.jsx";
 
 import toast, { Toaster } from "react-hot-toast";
+import CommentsModal from "./components/modals/CommentsModal.jsx";
 
 const App = () => {
   const location = useLocation();
@@ -43,6 +44,8 @@ const App = () => {
   const navigate = useNavigate();
 
   const [isLogOutModalOpen, setIsLogOutModalOpen] = useState(false);
+
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
   const ProtectedRoute = ({ children }) => {
     const user = localStorage.getItem("vibez_token");
@@ -97,6 +100,8 @@ const App = () => {
           onClick={handleLogout}
         />
       )}
+
+      {isCommentModalOpen && <CommentsModal />}
 
       {shouldShowSidebar && (
         <Sidebar setIsLogOutModalOpen={setIsLogOutModalOpen} />
