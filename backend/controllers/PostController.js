@@ -1,3 +1,4 @@
+import Comment from "../models/Comment.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 
@@ -127,24 +128,41 @@ export const likePost = async (req, res) => {
 // Comment on a post
 export const commentOnPost = async (req, res) => {
   try {
-    const { content } = req.body;
+    const { text } = req.body;
     const postId = req.params.id;
+    const userId = req.userId;
 
-    const newComment = {
-      content,
-      userId: req.userId,
-      createdAt: new Date(),
-    };
+    // Create a new comment
+    const newComment = await Comment.create({ text, userId, postId });
 
-    const post = await Post.findByIdAndUpdate(
-      postId,
-      { $push: { comments: newComment } },
-      { new: true }
+    // Add comment ID to the post's comments array
+    await Post.findByIdAndUpdate(postId, {
+      $push: { comments: newComment._id },
+    });
+
+    // Populate user details
+    const populatedComment = await Comment.findById(newComment._id).populate(
+      "userId",
+      "firstname lastname username profilePic _id"
     );
 
-    res.json(post);
+    res.status(201).json(populatedComment);
   } catch (error) {
     console.error("Error commenting on post:", error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+// gett all comments on a post
+export const getComments = async (req, res) => {
+  try {
+    const comments = await Comment.find({ postId: req.params.id })
+      .populate("userId", "firstname lastname profilePic _id username")
+      .exec();
+
+    res.status(200).json(comments);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
     res.status(500).json({ msg: "Server error" });
   }
 };

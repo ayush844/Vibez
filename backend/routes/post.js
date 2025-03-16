@@ -7,6 +7,7 @@ import {
   likePost,
   commentOnPost,
   getAllPosts,
+  getComments,
 } from "../controllers/PostController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
@@ -32,5 +33,8 @@ router.post("/:id/like", authMiddleware, likePost);
 
 // Comment on a post
 router.post("/:id/comment", authMiddleware, commentOnPost);
+
+// get all Comment on a post
+router.get("/:id/getcomments", authMiddleware, getComments);
 
 export default router;
