@@ -157,6 +157,7 @@ export const commentOnPost = async (req, res) => {
 export const getComments = async (req, res) => {
   try {
     const comments = await Comment.find({ postId: req.params.id })
+      .sort({ createdAt: -1 })
       .populate("userId", "firstname lastname profilePic _id username")
       .exec();
 

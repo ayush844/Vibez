@@ -45,8 +45,6 @@ const App = () => {
 
   const [isLogOutModalOpen, setIsLogOutModalOpen] = useState(false);
 
-  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
-
   const ProtectedRoute = ({ children }) => {
     const user = localStorage.getItem("vibez_token");
     if (user) {
@@ -100,8 +98,6 @@ const App = () => {
           onClick={handleLogout}
         />
       )}
-
-      {isCommentModalOpen && <CommentsModal />}
 
       {shouldShowSidebar && (
         <Sidebar setIsLogOutModalOpen={setIsLogOutModalOpen} />

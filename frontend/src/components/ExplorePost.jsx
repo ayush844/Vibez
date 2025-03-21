@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaBookmark,
   FaHeart,
@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import defaultImage from "../assets/default_images/defaultProfile.png";
 import toast from "react-hot-toast";
+import CommentsModal from "./modals/CommentsModal";
 
 const ExplorePost = ({
   postId,
@@ -23,6 +24,10 @@ const ExplorePost = ({
   likesCount,
 }) => {
   const [likesCnt, setLikesCnt] = useState(likesCount);
+
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+
+  const [allComments, setAllComments] = useState([]);
 
   const toggleBookmark = async () => {
     try {
@@ -67,8 +72,42 @@ const ExplorePost = ({
     }
   };
 
+  useEffect(() => {
+    const getAllComments = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:7000/api/post/${postId}/getcomments`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setAllComments(data);
+      } catch (error) {
+        console.error("Error during fetching explore posts:", error);
+        toast.error(
+          "Something went wrong while fetching comments on the posts"
+        );
+      }
+    };
+
+    getAllComments();
+  }, []);
+
   return (
     <div className="bg-gray-50 rounded-lg shadow h-fit">
+      {isCommentModalOpen && (
+        <CommentsModal
+          allComments={allComments}
+          setAllComments={setAllComments}
+          postId={postId}
+          onClose={() => setIsCommentModalOpen(false)}
+        />
+      )}
+
       {img && (
         <div className="w-full h-48 overflow-hidden">
           <img
@@ -120,8 +159,11 @@ const ExplorePost = ({
             <span className="text-base">{likesCnt}</span> */}
           </div>
           <div className="flex gap-2 items-center">
-            <FaRegCommentDots className="text-xl cursor-pointer hover:text-blue-500" />
-            <span className="text-base">5</span>
+            <FaRegCommentDots
+              className="text-xl cursor-pointer hover:text-blue-500"
+              onClick={() => setIsCommentModalOpen(true)}
+            />
+            <span className="text-base">{allComments?.length}</span>
           </div>
           {isBookmarked ? (
             <FaBookmark
