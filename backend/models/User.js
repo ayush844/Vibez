@@ -39,8 +39,21 @@ const UserSchema = new mongoose.Schema(
     followers: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
 
-    friends: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
-    friendRequests: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+    // friends: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+    // friendRequests: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+
+    friends: [
+      {
+        user: { type: mongoose.Schema.ObjectId, ref: "User" },
+        addedAt: { type: Date, default: Date.now },
+      },
+    ],
+    friendRequests: [
+      {
+        user: { type: mongoose.Schema.ObjectId, ref: "User" },
+        requestedAt: { type: Date, default: Date.now },
+      },
+    ],
 
     posts: [{ type: mongoose.Schema.ObjectId, ref: "Post" }],
     bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],

@@ -25,10 +25,11 @@ const FriendRequests = () => {
 
         const data = await response.json();
 
-        console.log(data?.friendRequests);
+        console.log("hey there>>>", data?.friendRequests);
         console.log(localStorage.getItem("vibez_token"));
 
         if (data?.friendRequests) {
+          console.log("friend requests: ", data.friendRequests);
           setFriendRequests(data.friendRequests);
         }
       };
@@ -52,8 +53,13 @@ const FriendRequests = () => {
       </div>
       {friendRequests.length > 0 ? (
         <div className=" w-full h-fit rounded-lg flex flex-col gap-2">
-          {friendRequests.map((request, index) => (
-            <FriendRequestsBox key={index} request={request} />
+          {friendRequests?.map((request, index) => (
+            <FriendRequestsBox
+              key={index}
+              request={request}
+              setFriendRequests={setFriendRequests}
+              friendRequests={friendRequests}
+            />
           ))}
           {/* <FriendRequestsBox />
           <FriendRequestsBox />
