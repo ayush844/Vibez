@@ -1,19 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Friendsicon from "../assets/icons/icons8-friend.svg";
 import PageHeader from "../components/PageHeader";
 import { FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { LuUserRoundSearch } from "react-icons/lu";
 import NewPeople from "../components/NewPeople";
+import toast from "react-hot-toast";
 
 const Friends = () => {
+  const [friendRequests, setFriendRequests] = useState([]);
+
+  useEffect(() => {
+    try {
+      const getFriendRequests = async () => {
+        const response = await fetch(
+          `http://localhost:7000/api/user/friend-request/`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        console.log(data?.friendRequests);
+        console.log(localStorage.getItem("vibez_token"));
+
+        if (data?.friendRequests) {
+          setFriendRequests(data.friendRequests);
+        }
+      };
+
+      getFriendRequests();
+    } catch (error) {
+      console.error("Error fetching friend requests:", error);
+      toast.error(
+        "Something went wrong fetching friend requests. Please try again later."
+      );
+    }
+  }, []);
+
   return (
     <div className="flex flex-col gap-8 ">
       <PageHeader img={Friendsicon} />
       <div className=" flex flex-col sm:flex-row items-center justify-evenly px-1 sm:px-4 gap-4">
         <div className=" w-60 h-48 sm:h-60 bg-gray-50 rounded-md flex-grow flex flex-col justify-evenly items-center">
           <h1 className=" text-6xl font-extrabold text-purple-600 line-clamp-1">
-            13
+            {friendRequests?.length}
           </h1>
           <h3 className=" text-xl font-bold">Friend Requests</h3>
           <Link to="/friends/friend_requests">

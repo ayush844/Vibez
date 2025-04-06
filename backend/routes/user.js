@@ -1,12 +1,16 @@
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware.js";
 import {
+  acceptFriendRequest,
   deleteUser,
   followUser,
   getBookmarks,
+  getFriendRequest,
   getLoggedInUserInfo,
   getUser,
   getUserPosts,
+  rejectFriendRequest,
+  sendFriendRequest,
   toggleBookmark,
   unfollowUser,
   updateUser,
@@ -29,6 +33,18 @@ router.post("/unfollow/:id", authMiddleware, unfollowUser);
 
 // get all posts of a user
 router.get("/:id/posts", authMiddleware, getUserPosts);
+
+// get friend request
+router.get("/friend-request/", authMiddleware, getFriendRequest);
+
+// Send friend request
+router.post("/friend-request/:id", authMiddleware, sendFriendRequest);
+
+// Accept friend request
+router.post("/accept-request/:id", authMiddleware, acceptFriendRequest);
+
+// Reject friend request
+router.post("/reject-request/:id", authMiddleware, rejectFriendRequest);
 
 // Get user details
 router.get("/:id", authMiddleware, getUser);
