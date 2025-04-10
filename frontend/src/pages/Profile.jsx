@@ -138,7 +138,7 @@ const Profile = () => {
             <div className=" flex items-center gap-2 mb-6">
               <FaUserFriends className=" size-4 sm:size-6 text-purple-600" />
               <h3 className=" text-lg sm:text-xl font-normal">
-                <span className=" font-bold">{user?.followers.length}</span>{" "}
+                <span className=" font-bold">{user?.friends?.length}</span>{" "}
                 friends
               </h3>
             </div>

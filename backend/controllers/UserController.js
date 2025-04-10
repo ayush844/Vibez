@@ -404,3 +404,35 @@ export const rejectFriendRequest = async (req, res) => {
     res.status(500).json({ msg: "Server error. Please try again later." });
   }
 };
+
+// Get all friends sorted by addedAt (newest first)
+export const getAllFriends = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    // Find user and select friends
+    const user = await User.findById(userId).select("friends").populate({
+      path: "friends.user",
+      select: "firstname lastname username profilePic _id",
+    });
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    // Sort friends by addedAt in descending order
+    const sortedFriends = user.friends
+      .sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
+      .map((friend) => ({
+        ...friend.user.toObject(),
+        addedAt: friend.addedAt,
+      }));
+
+    res.status(200).json({
+      msg: "Friends fetched successfully",
+      friends: sortedFriends,
+    });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};

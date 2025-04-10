@@ -4,6 +4,7 @@ import {
   acceptFriendRequest,
   deleteUser,
   followUser,
+  getAllFriends,
   getBookmarks,
   getFriendRequest,
   getLoggedInUserInfo,
@@ -45,6 +46,9 @@ router.post("/accept-request/:id", authMiddleware, acceptFriendRequest);
 
 // Reject friend request
 router.post("/reject-request/:id", authMiddleware, rejectFriendRequest);
+
+// Get all friends
+router.get("/friends", authMiddleware, getAllFriends);
 
 // Get user details
 router.get("/:id", authMiddleware, getUser);

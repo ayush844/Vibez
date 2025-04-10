@@ -9,6 +9,9 @@ import toast from "react-hot-toast";
 
 const Friends = () => {
   const [friendRequests, setFriendRequests] = useState([]);
+  const [friends, setFriends] = useState([]);
+
+  console.log("friends >>> ", friends);
 
   useEffect(() => {
     try {
@@ -25,15 +28,29 @@ const Friends = () => {
 
         const data = await response.json();
 
-        console.log(data?.friendRequests);
-        console.log(localStorage.getItem("vibez_token"));
-
         if (data?.friendRequests) {
           setFriendRequests(data.friendRequests);
         }
       };
 
+      const getFriends = async () => {
+        const response = await fetch(
+          `http://localhost:7000/api/user/friends/`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        if (data?.friends) {
+          setFriends(data.friends);
+        }
+      };
+
       getFriendRequests();
+      getFriends();
     } catch (error) {
       console.error("Error fetching friend requests:", error);
       toast.error(
@@ -48,7 +65,7 @@ const Friends = () => {
       <div className=" flex flex-col sm:flex-row items-center justify-evenly px-1 sm:px-4 gap-4">
         <div className=" w-60 h-48 sm:h-60 bg-gray-50 rounded-md flex-grow flex flex-col justify-evenly items-center">
           <h1 className=" text-6xl font-extrabold text-purple-600 line-clamp-1">
-            {friendRequests?.length}
+            {friendRequests?.length || 0}
           </h1>
           <h3 className=" text-xl font-bold">Friend Requests</h3>
           <Link to="/friends/friend_requests">
@@ -62,7 +79,7 @@ const Friends = () => {
         </div>
         <div className=" w-60 h-48 sm:h-60 bg-gray-50 rounded-md flex-grow  flex flex-col justify-evenly items-center">
           <h1 className=" text-6xl font-extrabold text-indigo-600 line-clamp-1">
-            87
+            {friends?.length || 0}
           </h1>
           <h3 className=" text-xl font-bold">Friends</h3>
           <Link to="/friends/my_friends">
