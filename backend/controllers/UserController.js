@@ -436,3 +436,55 @@ export const getAllFriends = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+
+//get recommendations
+export const getFriendRecommendations = async (req, res) => {
+  try {
+    const userId = req.userId;
+    // Fetch the current user and populate friends & received friend requests
+    const user = await User.findById(userId)
+      .select("friends friendRequests")
+      .populate("friends.user", "_id")
+      .populate("friendRequests.user", "_id");
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    // Extract IDs to exclude
+    const friendIds = user.friends.map((f) => f.user._id.toString());
+    const receivedRequestIds = user.friendRequests.map((req) =>
+      req.user._id.toString()
+    );
+
+    // Find users who received a friend request from the current user
+    const sentRequestUsers = await User.find({
+      "friendRequests.user": userId, // Finds users where `friendRequests` contains `userId`
+    }).select("_id");
+
+    const sentRequestIds = sentRequestUsers.map((u) => u._id.toString());
+
+    // Combine all IDs to exclude
+    const excludeIds = new Set([
+      ...friendIds,
+      ...receivedRequestIds,
+      ...sentRequestIds,
+      userId,
+    ]);
+
+    // Fetch users excluding those in `excludeIds`
+    const recommendations = await User.find({
+      _id: { $nin: Array.from(excludeIds) },
+    })
+      .select("firstname lastname username profilePic")
+      .limit(20);
+
+    return res.status(200).json({
+      msg: "recommendation fetched successfully",
+      recommendation: recommendations,
+    });
+  } catch (error) {
+    console.error("Error fetching friend recommendations:", error);
+    return res.status(500).json({ msg: error.message });
+  }
+};

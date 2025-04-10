@@ -10,8 +10,9 @@ import toast from "react-hot-toast";
 const Friends = () => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [friendRecommendations, setFriendRecommendations] = useState([]);
 
-  console.log("friends >>> ", friends);
+  console.log("friends recommendation >>> ", friendRecommendations);
 
   useEffect(() => {
     try {
@@ -49,8 +50,25 @@ const Friends = () => {
         }
       };
 
+      const getFriendRecommendations = async () => {
+        const response = await fetch(
+          `http://localhost:7000/api/user/recommendations/`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        if (data?.recommendation) {
+          setFriendRecommendations(data.recommendation);
+        }
+      };
+
       getFriendRequests();
       getFriends();
+      getFriendRecommendations();
     } catch (error) {
       console.error("Error fetching friend requests:", error);
       toast.error(
@@ -107,60 +125,72 @@ const Friends = () => {
         </div>
       </div>
 
-      <div className=" w-full flex justify-center">
-        <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
-          <NewPeople />
+      {friendRecommendations?.length > 0 && (
+        <div className=" w-full flex justify-center">
+          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {friendRecommendations.map((friend, index) => (
+              <NewPeople
+                key={index}
+                firstname={friend.firstname}
+                lastname={friend.lastname}
+                profilePic={friend.profilePic}
+                username={friend.username}
+              />
+            ))}
+            {/* <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople />
+            <NewPeople /> */}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
