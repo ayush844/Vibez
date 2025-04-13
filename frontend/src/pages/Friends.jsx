@@ -12,6 +12,8 @@ const Friends = () => {
   const [friends, setFriends] = useState([]);
   const [friendRecommendations, setFriendRecommendations] = useState([]);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   console.log("friends recommendation >>> ", friendRecommendations);
 
   useEffect(() => {
@@ -120,7 +122,9 @@ const Friends = () => {
           <input
             type="text"
             placeholder="search your friend"
-            className=" px-2 sm:px-4 py-1 sm:py-2 rounded-xl sm:rounded-3xl focus:outline-none text-sm sm:text-lg "
+            className="px-2 sm:px-4 py-1 sm:py-2 rounded-xl sm:rounded-3xl focus:outline-none text-sm sm:text-lg"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
@@ -128,66 +132,23 @@ const Friends = () => {
       {friendRecommendations?.length > 0 && (
         <div className=" w-full flex justify-center">
           <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {friendRecommendations.map((friend, index) => (
-              <NewPeople
-                key={index}
-                firstname={friend.firstname}
-                lastname={friend.lastname}
-                profilePic={friend.profilePic}
-                username={friend.username}
-              />
-            ))}
-            {/* <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople />
-            <NewPeople /> */}
+            {friendRecommendations
+              .filter((friend) => {
+                const fullName =
+                  `${friend.firstname} ${friend.lastname}`.toLowerCase();
+                const username = friend.username?.toLowerCase() || "";
+                const search = searchTerm.toLowerCase();
+                return fullName.includes(search) || username.includes(search);
+              })
+              .map((friend, index) => (
+                <NewPeople
+                  key={index}
+                  firstname={friend.firstname}
+                  lastname={friend.lastname}
+                  profilePic={friend.profilePic}
+                  username={friend.username}
+                />
+              ))}
           </div>
         </div>
       )}
