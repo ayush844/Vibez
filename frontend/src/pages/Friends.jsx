@@ -121,6 +121,7 @@ const Friends = () => {
 
           <input
             type="text"
+            setFriendRecommendations
             placeholder="search your friend"
             className="px-2 sm:px-4 py-1 sm:py-2 rounded-xl sm:rounded-3xl focus:outline-none text-sm sm:text-lg"
             value={searchTerm}
@@ -147,6 +148,7 @@ const Friends = () => {
                   lastname={friend.lastname}
                   profilePic={friend.profilePic}
                   username={friend.username}
+                  id={friend._id}
                 />
               ))}
           </div>

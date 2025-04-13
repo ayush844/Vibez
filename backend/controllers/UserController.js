@@ -39,8 +39,28 @@ export const getUser = async (req, res) => {
   try {
     const user = await User.findById(id)
       .select("-password")
-      .populate("followers", "username profilePic")
-      .populate("following", "username profilePic"); // Populate follower and following with basic info
+      .populate({
+        path: "friends.user",
+        select: "username profilePic _id",
+      })
+      .populate({
+        path: "posts",
+        options: { sort: { createdAt: -1 } },
+        populate: [
+          {
+            path: "likes",
+            select: "username profilePic _id",
+          },
+          {
+            path: "comments",
+            populate: {
+              path: "userId",
+              select: "username profilePic _id",
+            },
+          },
+        ],
+      });
+
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
@@ -351,6 +371,17 @@ export const acceptFriendRequest = async (req, res) => {
 
     if (!user || !sender)
       return res.status(404).json({ msg: "User not found" });
+
+    // Check if already friends
+    const alreadyFriends = user.friends.some(
+      (friend) => friend.user.toString() === senderId
+    );
+
+    if (alreadyFriends) {
+      return res
+        .status(400)
+        .json({ msg: "You are already friends with this user" });
+    }
 
     const friendRequestIndex = user.friendRequests.findIndex(
       (req) => req.user.toString() === senderId

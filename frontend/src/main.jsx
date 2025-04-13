@@ -32,6 +32,7 @@ import Post from "./pages/Post.jsx";
 
 import toast, { Toaster } from "react-hot-toast";
 import CommentsModal from "./components/modals/CommentsModal.jsx";
+import Person from "./pages/Person.jsx";
 
 const App = () => {
   const location = useLocation();
@@ -189,6 +190,15 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Post />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/person/:id"
+            element={
+              <ProtectedRoute>
+                <Person />
               </ProtectedRoute>
             }
           />
