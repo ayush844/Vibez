@@ -519,3 +519,39 @@ export const getFriendRecommendations = async (req, res) => {
     return res.status(500).json({ msg: error.message });
   }
 };
+
+export const getUserFeed = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const adminId = process.env.ADMIN_ID;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    // Collect friend IDs
+    const friendIds = user.friends.map((f) => f.user.toString());
+
+    // Create a list of IDs to fetch posts for (self + friends + admin)
+    const idsToFetch = [userId.toString(), ...friendIds];
+
+    // Ensure admin ID is included (avoid duplicate if user or friend is admin)
+    if (!idsToFetch.includes(adminId)) {
+      idsToFetch.push(adminId);
+    }
+
+    // Fetch posts with populated data, sorted by createdAt (newest first)
+    const posts = await Post.find({ userId: { $in: idsToFetch } })
+      .sort({ createdAt: -1 })
+      .populate("userId", "username profilePic _id firstname lastname")
+      .populate("likes", "username profilePic _id")
+      .populate({
+        path: "comments",
+        populate: { path: "userId", select: "username profilePic _id" },
+      });
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error("Error fetching feed:", error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};

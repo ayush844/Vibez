@@ -10,6 +10,7 @@ import {
   getFriendRequest,
   getLoggedInUserInfo,
   getUser,
+  getUserFeed,
   getUserPosts,
   rejectFriendRequest,
   sendFriendRequest,
@@ -19,6 +20,8 @@ import {
 } from "../controllers/UserController.js";
 
 const router = express.Router();
+
+router.get("/feed", authMiddleware, getUserFeed);
 
 // get logged in user info
 router.get("/profile", authMiddleware, getLoggedInUserInfo);
