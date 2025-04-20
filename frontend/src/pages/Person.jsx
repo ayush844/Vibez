@@ -20,7 +20,33 @@ const Person = () => {
   const [userPosts, setUserPosts] = useState(null);
   const [userPostsMedias, setUserPostsMedias] = useState([]);
 
+  const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
+
+  const userId = localStorage.getItem("vibez_userid");
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getBookmarkedPosts = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:7000/api/user/myBookmarks`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setBookmarkedPosts(data.bookmarks.map((post) => post._id));
+      } catch (error) {
+        toast.error("Something went wrong while fetching posts");
+      }
+    };
+
+    getBookmarkedPosts();
+  }, []);
 
   useEffect(() => {
     const fetchUserPosts = async () => {
@@ -54,6 +80,11 @@ const Person = () => {
   }, [id]);
 
   console.log("users posts", userPosts);
+
+  function isPostBookmarked(postId) {
+    // console.log(bookmarkedPosts.includes(postId), postId);
+    return bookmarkedPosts.includes(postId);
+  }
 
   const [activeTab, setActiveTab] = useState("Posts");
 
@@ -162,12 +193,16 @@ const Person = () => {
             {userPosts?.map((post) => (
               <FeedPost
                 key={post._id}
+                postId={post._id}
                 text={post.content}
                 img={post.image}
                 profilePic={user.profilePic}
                 name={`${user?.firstname} ${user?.lastname}`}
                 date={post.createdAt}
                 id={user?._id}
+                likesCount={post.likes.length}
+                isBookmarked={isPostBookmarked(post._id)}
+                isLiked={post.likes.some((like) => like._id === userId)}
               />
             ))}
           </>

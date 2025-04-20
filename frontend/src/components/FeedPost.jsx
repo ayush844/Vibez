@@ -30,6 +30,8 @@ const FeedPost = ({
 
   const navigate = useNavigate();
 
+  console.log("is liked", isLiked);
+
   const toggleBookmark = async () => {
     try {
       const response = await fetch(

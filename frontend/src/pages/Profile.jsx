@@ -16,8 +16,13 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const [userPosts, setUserPosts] = useState(null);
   const [userPostsMedias, setUserPostsMedias] = useState([]);
+  const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
 
   const navigate = useNavigate();
+
+  const userId = localStorage.getItem("vibez_userid");
+
+  console.log("user posts >>>>> ", userPosts);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -31,6 +36,26 @@ const Profile = () => {
         // setLoading(false);
       }
     };
+
+    const getBookmarkedPosts = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:7000/api/user/myBookmarks`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setBookmarkedPosts(data.bookmarks.map((post) => post._id));
+      } catch (error) {
+        toast.error("Something went wrong while fetching posts");
+      }
+    };
+
+    getBookmarkedPosts();
 
     fetchUserInfo();
   }, []);
@@ -67,6 +92,11 @@ const Profile = () => {
   }, [user]);
 
   console.log("users posts", userPosts);
+
+  function isPostBookmarked(postId) {
+    // console.log(bookmarkedPosts.includes(postId), postId);
+    return bookmarkedPosts.includes(postId);
+  }
 
   const [activeTab, setActiveTab] = useState("Posts");
 
@@ -175,12 +205,16 @@ const Profile = () => {
             {userPosts?.map((post) => (
               <FeedPost
                 key={post._id}
+                postId={post._id}
                 text={post.content}
                 img={post.image}
                 profilePic={user.profilePic}
                 name={`${user?.firstname} ${user?.lastname}`}
                 date={post.createdAt}
                 id={user?._id}
+                likesCount={post.likes.length}
+                isBookmarked={isPostBookmarked(post._id)}
+                isLiked={post.likes.includes(userId)}
               />
             ))}
           </>

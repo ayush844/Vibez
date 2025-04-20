@@ -1,11 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Homeicon from "../assets/icons/home.svg";
 import PostInput from "../components/PostInput";
 import FeedPost from "../components/FeedPost";
 import PageHeader from "../components/PageHeader";
 
 const Feed = () => {
-  const [feedPosts, setFeedPosts] = React.useState([]);
+  const [feedPosts, setFeedPosts] = useState([]);
+
+  const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
+
+  const userId = localStorage.getItem("vibez_userid");
+
+  console.log("posts", feedPosts);
+
+  function isPostBookmarked(postId) {
+    // console.log(bookmarkedPosts.includes(postId), postId);
+    return bookmarkedPosts.includes(postId);
+  }
 
   useEffect(() => {
     const getAllFeedPosts = async () => {
@@ -24,7 +35,26 @@ const Feed = () => {
       }
     };
 
+    const getBookmarkedPosts = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:7000/api/user/myBookmarks`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setBookmarkedPosts(data.bookmarks.map((post) => post._id));
+      } catch (error) {
+        toast.error("Something went wrong while fetching posts");
+      }
+    };
+
     getAllFeedPosts();
+    getBookmarkedPosts();
   }, []);
 
   return (
@@ -45,6 +75,8 @@ const Feed = () => {
               date={post.createdAt}
               likesCount={post.likes.length}
               id={post.userId._id}
+              isBookmarked={isPostBookmarked(post._id)}
+              isLiked={post.likes.some((like) => like._id === userId)}
             />
           ))}
         </>
