@@ -86,7 +86,9 @@ const Feed = () => {
         </>
       )}
 
-      <h1>Add more friends to view more posts</h1>
+      <h1 className=" text-lg sm:text-xl font-bold bg-gradient-to-r from-pink-600  to-indigo-500 inline-block text-transparent bg-clip-text">
+        Add more friends to view more posts
+      </h1>
     </div>
   );
 };

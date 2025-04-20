@@ -4,7 +4,7 @@ import PageHeader from "../../components/PageHeader";
 import Friendsicon from "../../assets/icons/icons8-friend.svg";
 import FriendRequestsBox from "../../components/FriendRequestsBox";
 
-import emoji from "../../assets/icons/icons8-crying-baby.svg";
+import emoji from "../../assets/icons/man.png";
 import toast from "react-hot-toast";
 
 const FriendRequests = () => {
@@ -77,8 +77,8 @@ const FriendRequests = () => {
         </div>
       ) : (
         <div className=" w-full h-fit flex flex-col items-center gap-4 py-6 bg-gray-50 rounded-lg">
-          <img src={emoji} alt="error icon" className=" size-64" />
-          <h1 className=" text-3xl font-normal text-purple-900">
+          <img src={emoji} alt="error icon" className="size-32 sm:size-64 " />
+          <h1 className=" text-lg sm:text-3xl font-normal text-purple-900">
             You have no friend requests
           </h1>
         </div>

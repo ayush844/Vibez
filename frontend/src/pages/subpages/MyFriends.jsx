@@ -4,7 +4,7 @@ import { LuUserRoundSearch } from "react-icons/lu";
 import Friendsicon from "../../assets/icons/icons8-friend.svg";
 import MyFriendBox from "../../components/MyFriendBox";
 
-import emoji from "../../assets/icons/icons8-crying-baby.svg";
+import emoji from "../../assets/icons/man.png";
 
 const MyFriends = () => {
   const [friends, setFriends] = useState([]);
@@ -76,8 +76,8 @@ const MyFriends = () => {
         </div>
       ) : (
         <div className="w-full h-fit flex flex-col items-center gap-4 py-6 bg-gray-50 rounded-lg">
-          <img src={emoji} alt="error icon" className="size-64" />
-          <h1 className="text-3xl font-normal text-purple-900">
+          <img src={emoji} alt="error icon" className="size-32 sm:size-64" />
+          <h1 className="text-lg sm:text-3xl font-normal text-purple-900">
             {searchQuery ? "No friends found" : "You have no friends"}
           </h1>
         </div>
