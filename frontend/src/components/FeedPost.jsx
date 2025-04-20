@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { FaRegBookmark } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa";
@@ -9,6 +9,7 @@ import defaultImage from "../assets/default_images/defaultProfile.png";
 import { formatDate } from "../utils/formatDate";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import CommentsModal from "./modals/CommentsModal";
 
 const FeedPost = ({
   text,
@@ -27,6 +28,10 @@ const FeedPost = ({
   const [postLiked, setPostLiked] = useState(isLiked);
 
   const [likesCnt, setLikesCnt] = useState(likesCount);
+
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+
+  const [allComments, setAllComments] = useState([]);
 
   const navigate = useNavigate();
 
@@ -75,8 +80,41 @@ const FeedPost = ({
     }
   };
 
+  useEffect(() => {
+    const getAllComments = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:7000/api/post/${postId}/getcomments`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("vibez_token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setAllComments(data);
+      } catch (error) {
+        toast.error(
+          "Something went wrong while fetching comments on the posts"
+        );
+      }
+    };
+
+    getAllComments();
+  }, []);
+
   return (
     <div className=" flex flex-col gap-3 sm:gap-6 px-2 sm:px-4 py-3 rounded-lg bg-gray-50">
+      {isCommentModalOpen && (
+        <CommentsModal
+          allComments={allComments}
+          setAllComments={setAllComments}
+          postId={postId}
+          onClose={() => setIsCommentModalOpen(false)}
+        />
+      )}
+
       <div className=" flex items-center justify-between">
         <div className=" flex items-center gap-4">
           <div className="h-8 w-8 hidden sm:flex sm:w-12 sm:h-12 rounded-full overflow-hidden">
@@ -139,8 +177,13 @@ const FeedPost = ({
           </span>
         </div>
         <div className=" flex gap-1 ">
-          <FaRegCommentDots className=" size-7 cursor-pointer hover:text-blue-500" />
-          <span className=" text-base hover:underline cursor-pointer">5</span>
+          <FaRegCommentDots
+            className=" size-7 cursor-pointer hover:text-blue-500"
+            onClick={() => setIsCommentModalOpen(true)}
+          />
+          <span className=" text-base hover:underline cursor-pointer">
+            {allComments?.length}
+          </span>
         </div>
       </div>
     </div>

@@ -91,7 +91,6 @@ const ExplorePost = ({
         const data = await response.json();
         setAllComments(data);
       } catch (error) {
-        console.error("Error during fetching explore posts:", error);
         toast.error(
           "Something went wrong while fetching comments on the posts"
         );
