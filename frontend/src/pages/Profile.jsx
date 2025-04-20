@@ -180,6 +180,7 @@ const Profile = () => {
                 profilePic={user.profilePic}
                 name={`${user?.firstname} ${user?.lastname}`}
                 date={post.createdAt}
+                id={user?._id}
               />
             ))}
           </>

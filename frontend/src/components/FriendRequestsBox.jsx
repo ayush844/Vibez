@@ -2,9 +2,12 @@ import React from "react";
 
 import defaultImage from "../assets/default_images/defaultProfile.png";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const FriendRequestsBox = ({ request, setFriendRequests, friendRequests }) => {
   console.log("request is : ", request);
+
+  const navigate = useNavigate();
 
   const acceptRequest = async () => {
     try {
@@ -66,7 +69,10 @@ const FriendRequestsBox = ({ request, setFriendRequests, friendRequests }) => {
           />
         </div>
         <div className=" flex flex-col items-start">
-          <h1 className=" font-bold cursor-pointer hover:underline active:scale-90 transition-all ease-in-out">
+          <h1
+            className=" font-bold cursor-pointer hover:underline active:scale-90 transition-all ease-in-out"
+            onClick={() => navigate(`/person/${request._id}`)}
+          >
             {request?.firstname} {request?.lastname}
           </h1>
           <p className="font-semibold text-gray-500">@{request?.username}</p>

@@ -9,6 +9,7 @@ import {
 import defaultImage from "../assets/default_images/defaultProfile.png";
 import toast from "react-hot-toast";
 import CommentsModal from "./modals/CommentsModal";
+import { useNavigate } from "react-router-dom";
 
 const ExplorePost = ({
   postId,
@@ -22,12 +23,15 @@ const ExplorePost = ({
   isLiked,
   onToggleLike,
   likesCount,
+  id,
 }) => {
   const [likesCnt, setLikesCnt] = useState(likesCount);
 
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
   const [allComments, setAllComments] = useState([]);
+
+  const navigate = useNavigate();
 
   const toggleBookmark = async () => {
     try {
@@ -128,7 +132,10 @@ const ExplorePost = ({
             />
           </div>
           <div className="flex flex-col items-start">
-            <h2 className="font-bold text-lg hover:underline cursor-pointer">
+            <h2
+              className="font-bold text-lg hover:underline cursor-pointer"
+              onClick={() => navigate(`/person/${id}`)}
+            >
               {name || "anonymous"}
             </h2>
             <p className="text-gray-600">

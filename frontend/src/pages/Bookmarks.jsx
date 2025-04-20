@@ -53,6 +53,7 @@ const Bookmarks = () => {
               isBookmarked={post.isBookmarked}
               isLiked={post.likes.includes(userId)}
               likesCount={post.likes.length}
+              id={post.userId._id}
             />
           ))}
         </>

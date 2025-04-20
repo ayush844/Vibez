@@ -69,6 +69,7 @@ const MyFriends = () => {
                 lastname={friend.lastname}
                 profilePic={friend.profilePic}
                 username={friend.username}
+                id={friend._id}
               />
             ))}
           </div>

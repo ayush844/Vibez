@@ -11,6 +11,7 @@ import defaultCover from "../assets/default_images/defaultCover.jpg";
 import defaultAvatar from "../assets/default_images/defaultProfile.png";
 import { getUserInfo } from "../utils/getLoggedInUser";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Person = () => {
   const { id } = useParams();
@@ -166,6 +167,7 @@ const Person = () => {
                 profilePic={user.profilePic}
                 name={`${user?.firstname} ${user?.lastname}`}
                 date={post.createdAt}
+                id={user?._id}
               />
             ))}
           </>

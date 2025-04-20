@@ -45,7 +45,10 @@ const NewPeople = ({
         />
       </div>
       <div className=" flex flex-col gap-2">
-        <h1 className=" text-lg sm:text-lg font-bold line-clamp-1 hover:underline cursor-pointer active:scale-90 transition-all ease-in-out">
+        <h1
+          className=" text-lg sm:text-lg font-bold line-clamp-1 hover:underline cursor-pointer active:scale-90 transition-all ease-in-out"
+          onClick={() => navigate(`/person/${id}`)}
+        >
           {firstname + " " + lastname}
         </h1>
         <p className=" text-base sm:text-lg font-medium text-gray-500 line-clamp-1">

@@ -8,6 +8,7 @@ import { FaRegCommentDots } from "react-icons/fa";
 import defaultImage from "../assets/default_images/defaultProfile.png";
 import { formatDate } from "../utils/formatDate";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const FeedPost = ({
   text,
@@ -19,12 +20,15 @@ const FeedPost = ({
   postId,
   isLiked,
   likesCount,
+  id,
 }) => {
   const [postBookmarked, setPostBookmarked] = useState(isBookmarked);
 
   const [postLiked, setPostLiked] = useState(isLiked);
 
   const [likesCnt, setLikesCnt] = useState(likesCount);
+
+  const navigate = useNavigate();
 
   const toggleBookmark = async () => {
     try {
@@ -81,7 +85,10 @@ const FeedPost = ({
             />
           </div>
           <div className=" flex flex-col items-start">
-            <h2 className=" font-bold text-lg cursor-pointer hover:underline">
+            <h2
+              className=" font-bold text-lg cursor-pointer hover:underline"
+              onClick={() => navigate(`/person/${id}`)}
+            >
               {name}
             </h2>
             <p className=" text-gray-500">{formatDate(date)}</p>

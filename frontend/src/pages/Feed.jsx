@@ -44,6 +44,7 @@ const Feed = () => {
               name={`${post.userId.firstname} ${post.userId.lastname}`}
               date={post.createdAt}
               likesCount={post.likes.length}
+              id={post.userId._id}
             />
           ))}
         </>

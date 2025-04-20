@@ -113,6 +113,7 @@ const Explore = () => {
               isLiked={post.likes.includes(userId)}
               onToggleLike={toggleLike}
               likesCount={post.likes.length}
+              id={post.userId._id}
             />
           ))}
       </Masonry>
