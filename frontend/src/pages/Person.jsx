@@ -12,6 +12,7 @@ import defaultAvatar from "../assets/default_images/defaultProfile.png";
 import { getUserInfo } from "../utils/getLoggedInUser";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import FriendsModal from "../components/modals/FriendsModal";
 
 const Person = () => {
   const { id } = useParams();
@@ -21,6 +22,8 @@ const Person = () => {
   const [userPostsMedias, setUserPostsMedias] = useState([]);
 
   const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
+
+  const [isFriendsModalOpen, setIsFriendsModalOpen] = useState(false);
 
   const userId = localStorage.getItem("vibez_userid");
 
@@ -47,6 +50,8 @@ const Person = () => {
 
     getBookmarkedPosts();
   }, []);
+
+  console.log("PERSON FRIENDS>>> ", user?.friends);
 
   useEffect(() => {
     const fetchUserPosts = async () => {
@@ -90,6 +95,12 @@ const Person = () => {
 
   return (
     <div className="flex flex-col gap-4 ">
+      {isFriendsModalOpen && (
+        <FriendsModal
+          onClose={() => setIsFriendsModalOpen(false)}
+          friendList={user?.friends}
+        />
+      )}
       <PageHeader img={Profileicon} />
       <div className=" rounded-md bg-gray-50 overflow-x-hidden">
         <div className=" w-full px-0 py-0 h-36 sm:h-60 rounded-md rounded-b-none">
@@ -155,7 +166,10 @@ const Person = () => {
             )}
             <div className=" flex items-center gap-2 mb-6">
               <FaUserFriends className=" size-4 sm:size-6 text-purple-600" />
-              <h3 className=" text-lg sm:text-xl font-normal">
+              <h3
+                className=" text-lg sm:text-xl font-normal  hover:underline cursor-pointer"
+                onClick={() => setIsFriendsModalOpen((prev) => !prev)}
+              >
                 <span className=" font-bold">{user?.friends?.length}</span>{" "}
                 friends
               </h3>

@@ -11,12 +11,14 @@ import defaultCover from "../assets/default_images/defaultCover.jpg";
 import defaultAvatar from "../assets/default_images/defaultProfile.png";
 import { getUserInfo } from "../utils/getLoggedInUser";
 import { useNavigate } from "react-router-dom";
+import FriendsModal from "../components/modals/FriendsModal";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [userPosts, setUserPosts] = useState(null);
   const [userPostsMedias, setUserPostsMedias] = useState([]);
   const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
+  const [isFriendsModalOpen, setIsFriendsModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -91,7 +93,7 @@ const Profile = () => {
     }
   }, [user]);
 
-  console.log("users posts", userPosts);
+  console.log("users FRIENDS >>>>> ", user?.friends);
 
   function isPostBookmarked(postId) {
     // console.log(bookmarkedPosts.includes(postId), postId);
@@ -102,6 +104,13 @@ const Profile = () => {
 
   return (
     <div className="flex flex-col gap-4 ">
+      {isFriendsModalOpen && (
+        <FriendsModal
+          onClose={() => setIsFriendsModalOpen(false)}
+          friendList={user?.friends}
+        />
+      )}
+
       <PageHeader img={Profileicon} />
       <div className=" rounded-md bg-gray-50 overflow-x-hidden">
         <div className=" w-full px-0 py-0 h-36 sm:h-60 rounded-md rounded-b-none">
@@ -167,7 +176,10 @@ const Profile = () => {
             )}
             <div className=" flex items-center gap-2 mb-6">
               <FaUserFriends className=" size-4 sm:size-6 text-purple-600" />
-              <h3 className=" text-lg sm:text-xl font-normal">
+              <h3
+                className=" text-lg sm:text-xl font-normal hover:underline cursor-pointer"
+                onClick={() => setIsFriendsModalOpen((prev) => !prev)}
+              >
                 <span className=" font-bold">{user?.friends?.length}</span>{" "}
                 friends
               </h3>

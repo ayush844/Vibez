@@ -20,7 +20,11 @@ export const getLoggedInUserInfo = async (req, res) => {
     const user = await User.findById(decoded.userId)
       .select("-password")
       .populate("followers", "username profilePic")
-      .populate("following", "username profilePic");
+      .populate("following", "username profilePic")
+      .populate(
+        "friends.user",
+        "firstname lastname profilePic _id username location"
+      );
 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
@@ -41,7 +45,7 @@ export const getUser = async (req, res) => {
       .select("-password")
       .populate({
         path: "friends.user",
-        select: "username profilePic _id",
+        select: "username profilePic location firstname lastname _id",
       })
       .populate({
         path: "posts",
