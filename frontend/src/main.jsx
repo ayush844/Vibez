@@ -35,8 +35,26 @@ import CommentsModal from "./components/modals/CommentsModal.jsx";
 import Person from "./pages/Person.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 
+import { io } from "socket.io-client";
+import NotificationListener from "./components/NotificationLister.jsx";
+
 const App = () => {
   const location = useLocation();
+
+  const socket = io("http://localhost:7000", {
+    transports: ["websocket"],
+    withCredentials: true,
+  });
+
+  socket.on("connect", () => {
+    console.log("Connected to server, socket ID:", socket.id);
+  });
+
+  socket.on("connect_error", (err) => {
+    console.error("Connection error:", err.message);
+  });
+
+  const userId = localStorage.getItem("vibez_userid");
 
   // Define paths where the Sidebar should NOT be displayed
   const noSidebarPaths = ["/login", "/signup"];
@@ -46,6 +64,7 @@ const App = () => {
   const navigate = useNavigate();
 
   const [isLogOutModalOpen, setIsLogOutModalOpen] = useState(false);
+  // const [notifications, setNotifications] = useState([]);
 
   const ProtectedRoute = ({ children }) => {
     const user = localStorage.getItem("vibez_token");
@@ -90,6 +109,8 @@ const App = () => {
   return (
     <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased text-gray-800">
       <Toaster position="top-center" reverseOrder={false} />
+
+      {userId && <NotificationListener userId={userId} />}
 
       {isLogOutModalOpen && (
         <GlobalModal

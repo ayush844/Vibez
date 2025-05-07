@@ -9,7 +9,7 @@ const authMiddleware = (req, res, next) => {
     return res.status(401).json({ msg: "No token, authorization denied" });
   }
 
-  console.log("HELLO FROM AUTHMIDDLEWARE");
+  // console.log("HELLO FROM AUTHMIDDLEWARE");
 
   const token = authHeader.split(" ")[1]; // Extract token after "Bearer"
 

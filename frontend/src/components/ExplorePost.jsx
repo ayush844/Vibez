@@ -10,6 +10,7 @@ import defaultImage from "../assets/default_images/defaultProfile.png";
 import toast from "react-hot-toast";
 import CommentsModal from "./modals/CommentsModal";
 import { useNavigate } from "react-router-dom";
+import socket from "../utils/socket";
 
 const ExplorePost = ({
   postId,
@@ -55,6 +56,8 @@ const ExplorePost = ({
     }
   };
 
+  const currentUserId = localStorage.getItem("vibez_userid");
+
   const toggleLike = async () => {
     try {
       const response = await fetch(
@@ -70,6 +73,21 @@ const ExplorePost = ({
       toast.success(data?.msg);
       onToggleLike(postId);
       setLikesCnt(data?.post?.likes?.length);
+      console.log("like_post socket emitted");
+      console.log("id is ", id, " currentUserId is ", currentUserId);
+      if (id && currentUserId && !isLiked) {
+        socket.emit("like_post", {
+          postOwnerId: id,
+          fromUser: currentUserId,
+        });
+      }
+
+      // socket.emit("notification", {
+      //   postOwnerId: id,
+      //   fromUser: currentUserId,
+      //   type: "like",
+      //   message: `${currentUserId} liked your post`,
+      // });
     } catch (error) {
       console.error("Error during liking the posts:", error);
       toast.error("Something went wrong while trying to like the post");

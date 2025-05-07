@@ -87,6 +87,11 @@ const FriendsModal = ({ onClose, friendList }) => {
               {/* <p className=" text-left">{comment?.text}</p> */}
             </div>
           ))}
+          {friendList?.length === 0 && (
+            <div className="flex items-center justify-center w-full h-full">
+              <p className="text-gray-500">No friends to show.</p>
+            </div>
+          )}
         </div>
 
         {/* <div className="flex items-center justify-between w-full gap-2">
