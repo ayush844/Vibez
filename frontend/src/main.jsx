@@ -37,6 +37,7 @@ import ScrollToTop from "./components/ScrollToTop.jsx";
 
 import { io } from "socket.io-client";
 import NotificationListener from "./components/NotificationLister.jsx";
+import { NotificationProvider } from "./context/NotificationContext.jsx";
 
 const App = () => {
   const location = useLocation();
@@ -248,11 +249,17 @@ const App = () => {
     </div>
   );
 };
-
+const currUser = localStorage.getItem("vibez_userid");
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      {currUser ? (
+        <NotificationProvider currentUserId={currUser}>
+          <App />
+        </NotificationProvider>
+      ) : (
+        <App />
+      )}
     </BrowserRouter>
   </StrictMode>
 );

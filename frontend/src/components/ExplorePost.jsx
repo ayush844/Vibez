@@ -75,7 +75,7 @@ const ExplorePost = ({
       setLikesCnt(data?.post?.likes?.length);
       console.log("like_post socket emitted");
       console.log("id is ", id, " currentUserId is ", currentUserId);
-      if (id && currentUserId && !isLiked) {
+      if (id && currentUserId && !isLiked && id !== currentUserId) {
         socket.emit("like_post", {
           postOwnerId: id,
           fromUser: currentUserId,

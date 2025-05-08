@@ -10,6 +10,7 @@ import Profileicon from "../assets/icons/icons8-male-user.svg";
 import Settingsicon from "../assets/icons/icons8-settings.svg";
 import Logouticon from "../assets/icons/icons8-logout.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNotification } from "../context/NotificationContext";
 
 const Sidebar = ({ setIsLogOutModalOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,6 +23,12 @@ const Sidebar = ({ setIsLogOutModalOpen }) => {
 
   // Helper function to check active route
   const isActive = (path) => location.pathname === path;
+
+  const { notifications } = useNotification();
+
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
+
+  console.log("UNREAD COUNT >>> ", unreadCount);
 
   return (
     <div className="relative">
@@ -126,7 +133,7 @@ const Sidebar = ({ setIsLogOutModalOpen }) => {
                   Notifications
                 </span>
                 <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full">
-                  5
+                  {unreadCount || 0}
                 </span>
               </Link>
             </li>
