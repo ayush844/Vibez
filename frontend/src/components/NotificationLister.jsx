@@ -17,7 +17,7 @@ function NotificationListener({ userId }) {
 
     socket.on("notification", (data) => {
       console.log("New notification:", data);
-      alert(data.message);
+      // alert(data.message);
     });
 
     return () => {

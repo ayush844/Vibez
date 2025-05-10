@@ -100,7 +100,7 @@ const PostInput = () => {
       });
     } catch (err) {
       console.error(err);
-      alert("An error occurred while posting: " + err.message);
+      // alert("An error occurred while posting: " + err.message);
 
       setPost({
         content: "",

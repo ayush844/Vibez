@@ -74,18 +74,15 @@ io.on("connection", (socket) => {
 
       const message = `${senderUsername} liked your post`;
 
-      io.to(postOwnerId).emit("notification", {
-        type: "like",
-        message,
-      });
-
       // Save to DB
-      await Notification.create({
+      const newNotification = await Notification.create({
         type: "like",
         sender: fromUser,
         receiver: postOwnerId,
         message,
       });
+
+      io.to(postOwnerId).emit("notification", newNotification);
 
       console.log("Notification saved to DB");
     } catch (err) {

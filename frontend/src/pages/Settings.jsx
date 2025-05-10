@@ -82,7 +82,7 @@ const Settings = () => {
       }
     } catch (err) {
       console.error(err);
-      alert("An error occurred while updating user information.");
+      // alert("An error occurred while updating user information.");
     }
   };
 

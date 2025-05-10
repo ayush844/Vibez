@@ -20,15 +20,18 @@ const Notification = () => {
           {unreadNotifications.map((notification) => (
             <NotificationBox
               key={notification._id}
+              id={notification._id}
               type={notification.type}
               message={notification.message}
             />
           ))}
         </div>
       ) : (
-        <div className="text-center mt-8 text-gray-500 text-xl">No new notifications</div>
+        <div className="text-center mt-8 text-gray-500 text-xl">
+          No new notifications
+        </div>
       )}
-      
+
       {/* </div> */}
     </div>
   );
