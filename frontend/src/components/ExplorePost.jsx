@@ -126,6 +126,7 @@ const ExplorePost = ({
           setAllComments={setAllComments}
           postId={postId}
           onClose={() => setIsCommentModalOpen(false)}
+          id={id}
         />
       )}
 

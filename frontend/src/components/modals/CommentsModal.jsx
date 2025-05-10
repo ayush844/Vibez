@@ -2,9 +2,18 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaCommentDots } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
+import socket from "../../utils/socket";
 
-const CommentsModal = ({ postId, onClose, allComments, setAllComments }) => {
+const CommentsModal = ({
+  id,
+  postId,
+  onClose,
+  allComments,
+  setAllComments,
+}) => {
   const [commentContent, setCommentContent] = useState("");
+
+  const currentUserId = localStorage.getItem("vibez_userid");
 
   const addComment = async () => {
     try {
@@ -24,10 +33,15 @@ const CommentsModal = ({ postId, onClose, allComments, setAllComments }) => {
 
       const data = await response.json();
 
-      console.log(data);
-      console.log(localStorage.getItem("vibez_token"));
-
       setAllComments((prev) => [data, ...prev]);
+
+      if (id && currentUserId && id !== currentUserId) {
+        socket.emit("comment_post", {
+          postOwnerId: id,
+          fromUser: currentUserId,
+          comment: commentContent,
+        });
+      }
 
       toast.success("comment added successfully");
       setCommentContent("");

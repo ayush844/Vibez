@@ -91,11 +91,34 @@ io.on("connection", (socket) => {
   });
 
   // When someone comments on a post, send a notification to the post owner
-  socket.on("comment_post", ({ postOwnerId, fromUser, comment }) => {
-    io.to(postOwnerId).emit("notification", {
-      type: "comment",
-      message: `${fromUser} commented: "${comment}"`,
-    });
+  // socket.on("comment_post", ({ postOwnerId, fromUser, comment }) => {
+  //   io.to(postOwnerId).emit("notification", {
+  //     type: "comment",
+  //     message: `${fromUser} commented: "${comment}"`,
+  //   });
+  // });
+
+  socket.on("comment_post", async ({ postOwnerId, fromUser, comment }) => {
+    try {
+      const senderUser = await User.findById(fromUser);
+      const senderUsername = senderUser?.username || "Someone";
+
+      const message = `${senderUsername} commented on your post: "${comment}"`;
+
+      // Save to DB
+      const newNotification = await Notification.create({
+        type: "comment",
+        sender: fromUser,
+        receiver: postOwnerId,
+        message,
+      });
+
+      io.to(postOwnerId).emit("notification", newNotification);
+
+      console.log("Notification saved to DB");
+    } catch (err) {
+      console.error("Failed to handle comment_post:", err);
+    }
   });
 });
 
