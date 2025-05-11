@@ -26,7 +26,7 @@ const Sidebar = ({ setIsLogOutModalOpen }) => {
 
   const { notifications } = useNotification();
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const unreadCount = notifications?.filter((n) => !n.isRead).length;
 
   console.log("UNREAD COUNT >>> ", unreadCount);
 

@@ -52,7 +52,7 @@ const App = () => {
   });
 
   socket.on("connect_error", (err) => {
-    console.error("Connection error:", err.message);
+    console.error("Connection error:", err);
   });
 
   const userId = localStorage.getItem("vibez_userid");
@@ -123,7 +123,7 @@ const App = () => {
         />
       )}
 
-      {shouldShowSidebar && (
+      {shouldShowSidebar && userId && (
         <Sidebar setIsLogOutModalOpen={setIsLogOutModalOpen} />
       )}
       <div className={shouldShowSidebar ? "flex-1 p-4" : "w-full h-full"}>
